@@ -5,16 +5,16 @@ import {
     useDeleteBusinessItemCategoryMutation,
     useDeleteMenuItemMutation,
     useGetMenuItemsQuery
-} from "../../redux/services/businessAPI";
-import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
-import GetUpload from "../util/upload/GetUpload";
+} from "../../../redux/services/businessAPI";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
+import GetUpload from "../../util/upload/GetUpload";
 import {Button, Form, Image, Input, List, Space} from "antd";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
-import DeleteConfirmationModal from "../util/modals/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../util/modals/DeleteConfirmationModal";
 import "./businessMenu.css"
-import NoDataGIF from "../util/NoDataGIF";
+import NoDataGIF from "../../util/NoDataGIF";
 
 const ListItemCard = ({item, cardMargin, IconText, setupUpdateItem, setDeleteItemId, editing}) => {
     return <List.Item

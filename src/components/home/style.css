@@ -1,0 +1,28 @@
+.InformationDiv {
+    position: relative;
+}
+
+.typing-h1 {
+    font-weight: bolder;
+    white-space: normal;
+    word-break: break-word;
+    border-right: 2px solid;
+    overflow: hidden;
+    animation: blink-caret 0.75s step-end infinite;
+    display: inline-block;
+    min-height: 1.5em;
+}
+
+.digitized-div {
+    transition: all ease-in-out 0.1s;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.digitized-div:active {
+    box-shadow: none;
+}
+@keyframes blink-caret {
+    50% {
+        border-color: transparent;
+    }
+}

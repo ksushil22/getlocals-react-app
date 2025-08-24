@@ -1,7 +1,7 @@
 import React from "react";
-import ModalPopup from "../util/modals/ModalPopup";
+import ModalPopup from "../../util/modals/ModalPopup";
 import {Col, Image, Row} from "antd";
-import {PUBLIC_BUSINESS_API} from "../../redux/api_url";
+import {PUBLIC_BUSINESS_API} from "../../../redux/api_url";
 import {useSelector} from "react-redux";
 
 const BASE_URL = process.env.BASE_API_URL;

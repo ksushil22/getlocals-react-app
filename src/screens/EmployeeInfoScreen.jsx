@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {ActiveNavigationMenuContext} from "../context/ActiveNavigationProvider";
 import {NAVIGATION_ROUTES} from "../components/util/Constants";
-import EmployeeInfo from "../components/employee/EmployeeInfo";
+import EmployeeInfo from "../components/business/employee/EmployeeInfo";
 
 const EmployeeInfoScreen = () => {
     const {updateActiveNavigationMenu} = useContext(ActiveNavigationMenuContext);

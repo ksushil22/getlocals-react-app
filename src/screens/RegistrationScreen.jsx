@@ -60,6 +60,7 @@ const registerScreenStyles = {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
+        border: '2px solid var(--primary-background)',
         margin: '0',
     },
 }

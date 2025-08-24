@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from "react";
 import {Button, Form, Image, Input, List, Row, Select, Space} from "antd";
-import BusinessHeading from "../util/BusinessHeading";
-import GetUpload from "../util/upload/GetUpload";
+import BusinessHeading from "../../util/BusinessHeading";
+import GetUpload from "../../util/upload/GetUpload";
 import "./employee.css"
 import {
     useCreateEmployeeInfoMutation, useDeleteEmployeeMutation,
     useGetEmployeesQuery,
     useUpdateEmployeeInfoMutation
-} from "../../redux/services/businessAPI";
+} from "../../../redux/services/businessAPI";
 import {useSelector} from "react-redux";
-import NoDataGIF from "../util/NoDataGIF";
+import NoDataGIF from "../../util/NoDataGIF";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faDeleteLeft, faEdit, faPhone, faReply} from "@fortawesome/free-solid-svg-icons";
-import {PUBLIC_BUSINESS_API} from "../../redux/api_url";
-import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
+import {PUBLIC_BUSINESS_API} from "../../../redux/api_url";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
-import DeleteConfirmationModal from "../util/modals/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../util/modals/DeleteConfirmationModal";
 
 const BASE_URL = process.env.BASE_API_URL;
 

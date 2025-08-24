@@ -21,7 +21,8 @@ const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName
                 flexDirection: screens.md ? 'row' : 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: 10
+                padding: 10,
+                backgroundColor: 'white'
             }}>
             <div className="image-container"
                  style={{

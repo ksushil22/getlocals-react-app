@@ -84,7 +84,7 @@ const Template1Footer = () => {
         <>
             <StyledFooterContainer className="footer-container">
                 <StyledTimingContainer>
-                    <FooterHeading>Timings</FooterHeading>
+                    <FooterHeading>Business Hours</FooterHeading>
                     <span>Monday: <span>{footerContent?.timings?.monday}</span></span>
                     <span>Tuesday: <span>{footerContent?.timings?.tuesday}</span></span>
                     <span>Wednesday: <span>{footerContent?.timings?.wednesday}</span></span>

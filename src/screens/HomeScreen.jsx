@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from "react";
-import Home from "../components/home/Home";
+import Home from "../components/business/home/Home";
 import {ActiveNavigationMenuContext} from "../context/ActiveNavigationProvider";
 import {NAVIGATION_ROUTES} from "../components/util/Constants";
 

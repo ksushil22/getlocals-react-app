@@ -11,8 +11,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {ActiveNavigationMenuContext} from "../../context/ActiveNavigationProvider";
-import {logOut} from "../../redux/slicers/authSlicer";
+import {ActiveNavigationMenuContext} from "../../../context/ActiveNavigationProvider";
+import {logOut} from "../../../redux/slicers/authSlicer";
 
 export default function () {
     const dispatch = useDispatch();
@@ -72,7 +72,7 @@ export default function () {
                 }}
                 onClick={() => navigate('/business-admin/home')}
                 preview={false}
-                src={require('../../assets/img/GetLocals-logos/GetLocals-logos_transparent.png')}/>
+                src={require('../../../assets/img/GetLocals-logos/GetLocals-logos_transparent.png')}/>
             <Menu
                 selectedKeys={[activeNavigationMenu]}
                 theme={'light'}

@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {useUserProfileQuery} from "../../redux/services/authAPI";
+import {useUserProfileQuery} from "../../../redux/services/authAPI";
 import {Row} from "antd";
 import "./home.css"
 import AboutUs from "./AboutUs";
-import {useLazyGetBusinessQuery} from "../../redux/services/businessAPI";
-import GetUpload from "../util/upload/GetUpload";
-import CustomPopover from "../util/CustomPopover";
-import BusinessSelector from "../util/BusinessSelector";
-import BusinessHeading from "../util/BusinessHeading";
+import {useLazyGetBusinessQuery} from "../../../redux/services/businessAPI";
+import GetUpload from "../../util/upload/GetUpload";
+import CustomPopover from "../../util/CustomPopover";
+import BusinessSelector from "../../util/BusinessSelector";
+import BusinessHeading from "../../util/BusinessHeading";
 import Timings from "./Timings";
-import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
-import {PUBLIC_BUSINESS_API} from "../../redux/api_url";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
+import {PUBLIC_BUSINESS_API} from "../../../redux/api_url";
 import ContactInformation from "./ContactInformation";
 
 export default function Home() {

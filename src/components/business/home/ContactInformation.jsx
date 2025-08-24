@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react'
 import {Button, Form, Input, Row} from "antd";
 import "./home.css"
-import {useGetContactInformationQuery, useUpdateContactInformationMutation} from "../../redux/services/businessAPI";
-import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
+import {useGetContactInformationQuery, useUpdateContactInformationMutation} from "../../../redux/services/businessAPI";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 
 const ContactInformation = ({businessId}) => {
     const [form] = Form.useForm();

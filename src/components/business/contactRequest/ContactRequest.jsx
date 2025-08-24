@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Image, List, Row} from "antd";
-import BusinessHeading from "../util/BusinessHeading";
-import {useGetAllContactRequestsQuery} from "../../redux/services/businessAPI";
+import BusinessHeading from "../../util/BusinessHeading";
+import {useGetAllContactRequestsQuery} from "../../../redux/services/businessAPI";
 import {useSelector} from "react-redux";
-import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
-import {PUBLIC_BUSINESS_API} from "../../redux/api_url";
-import NoDataGIF from "../util/NoDataGIF";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
+import {PUBLIC_BUSINESS_API} from "../../../redux/api_url";
+import NoDataGIF from "../../util/NoDataGIF";
 import ContactRequestModal from "./ContactRequestModal";
 
 import './contactRequest.css'

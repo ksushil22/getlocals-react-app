@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Button, Form, Input} from "antd";
 import "./home.css";
-import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
-import {useUpdateAboutUsMutation} from "../../redux/services/businessAPI";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
+import {useUpdateAboutUsMutation} from "../../../redux/services/businessAPI";
 import {useSelector} from "react-redux";
-import CustomPopover from "../util/CustomPopover";
+import CustomPopover from "../../util/CustomPopover";
 import {LoadingOutlined} from "@ant-design/icons";
 
 export default function ({aboutUs, isLoading=true}) {

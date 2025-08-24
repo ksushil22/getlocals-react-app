@@ -5,11 +5,11 @@ import {
     useGetBusinessOperationStatusQuery,
     useGetBusinessTimingsQuery, useUpdateBusinessOperationStatusMutation,
     useUpdateBusinessTimingsMutation
-} from "../../redux/services/businessAPI";
+} from "../../../redux/services/businessAPI";
 import {useSelector} from "react-redux";
-import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 import "./home.css"
-import CustomPopover from "../util/CustomPopover";
+import CustomPopover from "../../util/CustomPopover";
 
 const TimingsForm = () => {
 

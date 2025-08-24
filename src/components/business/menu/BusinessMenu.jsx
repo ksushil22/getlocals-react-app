@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useCreateBusinessItemCategoryMutation, useGetBusinessItemCategoriesQuery } from "../../redux/services/businessAPI";
-import GetLoader, { DISPLAY } from "../util/customSpinner/GetLoader";
+import { useCreateBusinessItemCategoryMutation, useGetBusinessItemCategoriesQuery } from "../../../redux/services/businessAPI";
+import GetLoader, { DISPLAY } from "../../util/customSpinner/GetLoader";
 import {Button, Empty, Form, Input, Row, Tabs} from "antd";
 import './businessMenu.css'
-import BusinessHeading from "../util/BusinessHeading";
+import BusinessHeading from "../../util/BusinessHeading";
 import {faExclamation} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import NoDataGIF from "../util/NoDataGIF";
+import NoDataGIF from "../../util/NoDataGIF";
 
 // Lazy load components for each tab
 const LazyTabContent = React.lazy(() => import('./MenuList'));

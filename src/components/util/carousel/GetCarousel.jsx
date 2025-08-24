@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
-import {current} from "@reduxjs/toolkit";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
-const GetCarousel = ({ images, time = 5000, background = "#808080" }) => {
+const GetCarousel = ({ images, time = 5000, background = "#808080", customStyle= {}, showIndicators=true, infiniteLoop=false }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [autoRotationCompleted, setAutoRotationCompleted] = useState(false);
 
@@ -27,7 +26,7 @@ const GetCarousel = ({ images, time = 5000, background = "#808080" }) => {
 
     const goToNext = () => {
         const isLastSlide = currentIndex === images.length - 1;
-        if (isLastSlide) {
+        if (isLastSlide && !infiniteLoop) {
             setAutoRotationCompleted(true);
         }
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
@@ -49,7 +48,8 @@ const GetCarousel = ({ images, time = 5000, background = "#808080" }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: 0
+            margin: 0,
+            ...customStyle
         }} className="carousel">
             <div
                 className="carousel-inner"
@@ -64,21 +64,27 @@ const GetCarousel = ({ images, time = 5000, background = "#808080" }) => {
                     </div>
                 ))}
             </div>
-            <button className="prev" onClick={goToPrevious}>
-                &#10094;
-            </button>
-            <button className="next" onClick={goToNext}>
-                &#10095;
-            </button>
-            <div className="indicators">
-                {images.map((_, index) => (
-                    <span
-                        key={index}
-                        className={`indicator ${index === currentIndex ? 'active' : ''}`}
-                        onClick={() => goToSlide(index)}
-                    ></span>
-                ))}
-            </div>
+            {
+                showIndicators && (
+                    <>
+                        <button className="prev" onClick={goToPrevious}>
+                            &#10094;
+                        </button>
+                        <button className="next" onClick={goToNext}>
+                            &#10095;
+                        </button>
+                        <div className="indicators">
+                            {images.map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={`indicator ${index === currentIndex ? 'active' : ''}`}
+                                    onClick={() => goToSlide(index)}
+                                ></span>
+                            ))}
+                        </div>
+                    </>
+                )
+            }
         </div>
     );
 };

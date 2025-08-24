@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import BusinessMenu from "../components/menu/BusinessMenu";
+import BusinessMenu from "../components/business/menu/BusinessMenu";
 import {ActiveNavigationMenuContext} from "../context/ActiveNavigationProvider";
 import {NAVIGATION_ROUTES} from "../components/util/Constants";
 
