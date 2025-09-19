@@ -1,16 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Button, Form, Input, Select} from "antd";
-import {useGetTypesQuery, useRegisterBusinessMutation} from "../../redux/services/businessAPI";
+import {useGetTypesQuery, useRegisterBusinessMutation, useLazyCheckUsernameExistsQuery} from "../../redux/services/businessAPI";
 import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
-import {Link, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {logOut} from "../../redux/slicers/authSlicer";
 import RegistrationSuccessModal from "./RegistrationSuccessModal";
 
 export default function () {
     const [form] = Form.useForm();
     const {data: businessTypes, isLoading} = useGetTypesQuery();
     const [registerBusiness, {isLoading: isRegisteringBusiness}] = useRegisterBusinessMutation();
+    const [checkUsernameExists] = useLazyCheckUsernameExistsQuery();
     const [isRegistrationModalVisible, setIsRegistrationModalVisible] = useState(false);
 
     if (isLoading) {
@@ -24,6 +22,28 @@ export default function () {
         required: true,
         message: 'The field is required.'
     }]
+
+    const validateUsername = async (_, value) => {
+        if (!value) {
+            return Promise.resolve();
+        }
+        
+        // Basic validation for username format
+        if (value.length < 3) {
+            return Promise.reject(new Error('Username must be at least 3 characters long'));
+        }
+        
+        if (!/^[a-zA-Z0-9-]+$/.test(value)) {
+            return Promise.reject(new Error('Only letters, numbers, and "-"'));
+        }
+
+        const result = await checkUsernameExists(value).unwrap();
+        if (result && !result.exists) {
+            return Promise.resolve();
+        }
+
+        return Promise.reject(new Error('Username not available.'));
+    }
 
     function onFinish() {
         const fullLocation = `${form.getFieldValue('street')}, ${form.getFieldValue('city')}, ${form.getFieldValue('province')}`;
@@ -69,6 +89,27 @@ export default function () {
                         onChange={(value) => form.setFieldValue('businessType', value)}
                         placeholder={'Business Type'}
                         style={registerBusinessStyles.input}
+                    />
+                </div>
+            </Form.Item>
+            <Form.Item
+                name={'username'}
+                hasFeedback={true}
+                validateDebounce={1000}
+                rules={[
+                    {
+                        required: true,
+                        message: 'Username is required.'
+                    },
+                    {
+                        validator: validateUsername
+                    }
+                ]}
+            >
+                <div className={'hover-input'} style={{position: 'relative'}}>
+                    <Input 
+                        rootClassName={"authentication"} 
+                        placeholder={'Username'}
                     />
                 </div>
             </Form.Item>

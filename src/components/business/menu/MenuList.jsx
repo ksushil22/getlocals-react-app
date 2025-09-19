@@ -126,9 +126,11 @@ export default function ({categoryId, editing = false}) {
         </Form.Item>
         <Form.Item>
             <Button
+                className={"create-item-button"}
                 loading={isCreatingItem}
                 style={menuStyles.formButton} htmlType={"submit"}>{updateItemId ? "Update" : "Create Item"}</Button>
             <Button
+                className={"create-item-button"}
                 style={{
                     opacity: updateItemId ? 1 : 0,
                     transition: 'all 0.3s ease-in-out',
@@ -273,6 +275,6 @@ const menuStyles = {
         background: 'none',
         borderRadius: '5px',
         border: 'none',
-        boxShadow: '0 5px 10px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19)'
+        boxShadow: '0 2px 5px 0 rgba(0,0,0,0.24),0 2px 5px 0 rgba(0,0,0,0.19)'
     }
 }

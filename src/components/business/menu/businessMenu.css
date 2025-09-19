@@ -50,3 +50,10 @@
 .item-tab > div .ant-tabs-ink-bar {
     background: var(--primary-color) !important;
 }
+
+.create-item-button:active,
+.create-item-button:focus,
+.create-item-button:hover{
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+    color: black !important;
+}

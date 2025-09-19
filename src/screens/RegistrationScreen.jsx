@@ -3,10 +3,10 @@ import RegisterUser from "../components/authentication/RegisterUser";
 import RegisterBusiness from "../components/authentication/RegisterBusiness";
 import {Col, Image, Row} from "antd";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
-import {Link} from "react-router-dom";
+import {REGISTER_USER} from "../components/util/Constants";
 
 export default function RegistrationScreen() {
-    const [currentState, setCurrentState] = useState(0);
+    const [currentState, setCurrentState] = useState(REGISTER_USER);
     const screens = useBreakpoint();
     const secondDivsHeight = screens.md || screens.lg || screens.xl || screens.xxl ? '100vh' : '88vh';
 
@@ -30,7 +30,7 @@ export default function RegistrationScreen() {
                      ...registerScreenStyles.innerDivs,
                  }}
             >
-                {currentState === 0 ?
+                {currentState === REGISTER_USER ?
                     <RegisterUser
                         setCurrentState={setCurrentState}
                     /> :

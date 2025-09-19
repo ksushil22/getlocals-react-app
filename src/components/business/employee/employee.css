@@ -26,12 +26,14 @@
 }
 .employee-form-div .submit-button {
     min-width: 150px !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-weight: bolder !important;
     font-size: large !important;
     height: auto;
     border-radius: 5px;
     border: none;
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.24),0 2px 5px 0 rgba(0,0,0,0.19);
 }
 
 .employee-form-div .submit-button:active,

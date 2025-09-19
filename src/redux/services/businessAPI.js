@@ -241,6 +241,9 @@ export const businessAPI = rootAPI.injectEndpoints({
         }),
         getFooterContent: builder.query({
             query: ({businessId}) => `${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/footer/`
+        }),
+        checkUsernameExists: builder.query({
+            query: (username) => `${BASE_URL}${PUBLIC_BUSINESS_API}check-username/${username}/`
         })
     })
 });
@@ -274,5 +277,6 @@ export const {
     useGetPublicBusinessInfoQuery,
     useGetBusinessLogoQuery,
     useSendBusinessReviewMutation,
-    useGetFooterContentQuery
+    useGetFooterContentQuery,
+    useLazyCheckUsernameExistsQuery
 } = businessAPI

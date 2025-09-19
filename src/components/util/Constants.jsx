@@ -1,4 +1,3 @@
-export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export const NAVIGATION_ROUTES = new Map([
     [0, "home"],
@@ -8,3 +7,6 @@ export const NAVIGATION_ROUTES = new Map([
     [4, "employee-info"],
     [5, "logout"]
 ]);
+
+export const REGISTER_USER = "REGISTER_USER";
+export const REGISTER_BUSINESS = "REGISTER_BUSINESS";

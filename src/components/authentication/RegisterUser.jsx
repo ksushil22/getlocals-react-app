@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import "./authentication.css";
 import {setCredentials} from "../../redux/slicers/authSlicer";
+import {REGISTER_BUSINESS} from "../util/Constants";
 
 export default function ({
                              setCurrentState,
@@ -62,7 +63,7 @@ export default function ({
         registerUser(form.getFieldsValue()).then(({data, error})=> {
             if (data) {
                 dispatch(setCredentials({...data, username: form.getFieldValue('email')}))
-                setCurrentState(1)
+                setCurrentState(REGISTER_BUSINESS)
             }
         })
 
