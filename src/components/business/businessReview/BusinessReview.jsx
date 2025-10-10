@@ -113,7 +113,7 @@ const ReviewCards = ({item, businessId}) => {
         <List.Item.Meta
             title={item.fullName}
             description={
-                <GetRating readOnly={true} initialRating={item.rating} onSelect={() => {}}/>}
+                <GetRating readOnly={true} initialRating={item?.rating} onSelect={() => {}}/>}
         />
         <p>{item.comment}</p>
     </List.Item>

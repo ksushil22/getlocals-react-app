@@ -5,7 +5,8 @@ export const NAVIGATION_ROUTES = new Map([
     [2, "reviews"],
     [3, "contact_requests"],
     [4, "employee-info"],
-    [5, "logout"]
+    [5, "logout"],
+    [6, "order"]
 ]);
 
 export const REGISTER_USER = "REGISTER_USER";

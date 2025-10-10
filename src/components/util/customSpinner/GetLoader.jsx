@@ -20,6 +20,14 @@ export const SPINNERS = {
             </div>
         </div>
     ),
+    SKELETON_LIST_REVERSED: (
+        <div style={{ width: '100%' }}>
+            <div style={{ display: 'flex', width: '100%', margin: '10px 0' }}>
+                <Skeleton.Image style={{ marginLeft: 30 }} active={true}/>
+                <Skeleton loading={true} active={true} style={{ flex: 1 }} />
+            </div>
+        </div>
+    ),
     SKELETON_IMAGE: <Skeleton.Image style={{ marginLeft: 30 }} />,
     OTHER: 'other'
 };

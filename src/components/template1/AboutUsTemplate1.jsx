@@ -14,6 +14,14 @@ const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName
         backgroundColor: COLORS.PRIMARY_BACKGROUND,
         margin: 10,
     }}>
+        <div style={{
+            color: COLORS.PRIMARY_COLOR,
+            textAlign: 'center',
+            alignSelf: 'center',
+            fontSize: 'xxx-large',
+            fontWeight: 'bolder',
+            textTransform: 'uppercase',
+        }}>{businessName}</div>
         <div
             id={'about-us'}
             style={{
@@ -22,7 +30,7 @@ const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: 10,
-                backgroundColor: 'white'
+                backgroundColor: COLORS.PRIMARY_BACKGROUND
             }}>
             <div className="image-container"
                  style={{
@@ -52,28 +60,30 @@ const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
                 textAlign: 'center',
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
+                padding: 10
             }}>
 
                 <GetAnimation
                     animateIn={"fadeInRight"}
                     animateOnce={true}
                     duration={1}>
-                    <span style={{
-                        position: 'relative',
-                        top: 10,
-                        marginTop: 0,
-                        color: COLORS.PRIMARY_COLOR,
-                        textAlign: 'center',
-                        fontSize: 'xxx-large',
-                        fontWeight: 'bolder',
-                        textTransform: 'uppercase',
-                    }}>{businessName}</span>
-                    <p style={{ color: COLORS.PRIMARY_COLOR }}>
-                        {about}
-                    </p>
+                    <div style={{
+                        alignItems: 'center',
+                    }}>
+                        <p style={{
+                            textAlign: 'justify',
+                            fontSize: 'large',
+                            fontWeight: 'normal',
+                            color: COLORS.PRIMARY_COLOR,
+                            whiteSpace: 'pre-wrap',
+                            maxWidth: '500px'
+                        }}>
+                            {about}
+                        </p>
+                    </div>
                 </GetAnimation>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 
-const GetRating = ({ onSelect, readOnly, initialRating, color='var(--primary-color)' }) => {
+const GetRating = ({ onSelect, readOnly, initialRating, color='#ffe234' }) => {
     const [rating, setRating] = useState(initialRating || null);
     const [hoveredRating, setHoveredRating] = useState(null);
 

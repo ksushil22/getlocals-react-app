@@ -3,7 +3,7 @@ import {Image, Menu} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faBars,
-    faBookOpen,
+    faBookOpen, faCartShopping,
     faCommentDots,
     faFaceSmile,
     faHouseUser,
@@ -24,6 +24,11 @@ export default function () {
             label: (<Link to={"/business-admin/home/"}>Home</Link>),
             key: 'home',
             icon: <FontAwesomeIcon icon={faHouseUser}/>,
+        },
+        {
+            label: (<Link to={"/business-admin/orders/"}>Orders</Link>),
+            key: 'order',
+            icon: <FontAwesomeIcon icon={faCartShopping} />,
         },
         {
             label: (<Link to={'/business-admin/menu-items/'}>Menu</Link>),

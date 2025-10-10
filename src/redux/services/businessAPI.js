@@ -63,15 +63,6 @@ export const businessAPI = rootAPI.injectEndpoints({
             transformResponse: (items) => {
                 const transformedData = [];
                 items?.map((item) => {
-                    let image = item.image;
-                    if (image) {
-                        image = {
-                            uid: image?.id,
-                            name: image?.name,
-                            status: 'done',
-                            url: `data:${image?.extension};base64,${image?.image}`
-                        }
-                    }
                     transformedData.push({
                         'id': item.id,
                         'name': item.name,
@@ -79,7 +70,7 @@ export const businessAPI = rootAPI.injectEndpoints({
                         'ingredients': item.ingredients,
                         'description': item.description,
                         'price': item.price,
-                        'image': image,
+                        'imageId': item.imageId,
                         'currency': item.currency
                     })
                 })

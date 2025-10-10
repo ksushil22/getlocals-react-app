@@ -3,9 +3,9 @@ import {Layout} from "antd";
 import {Content, Footer} from "antd/es/layout/layout";
 
 export const COLORS = {
-    PRIMARY: '#9a9a9a',
-    PRIMARY_BACKGROUND: '#F5F5F5CC',
-    PRIMARY_COLOR: '#252833'
+    PRIMARY: '#b8b8b8',
+    PRIMARY_BACKGROUND: '#F5F5F5',
+    PRIMARY_COLOR: '#2b2b2b'
 }
 
 export const StyledLayout = styled(Layout)`  

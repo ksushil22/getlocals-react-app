@@ -19,6 +19,7 @@ const GetLocalsHome = lazy(async () => import('./screens/GetLocalsHome'));
 const RegistrationScreen = lazy(async () => import('./screens/RegistrationScreen'));
 const LoginScreen = lazy(async () => import('./screens/LoginScreen'));
 const HomeScreen = lazy(async () => import('./screens/HomeScreen'));
+const OrderScreen = lazy(async () => import('./screens/OrderScreen'));
 const MenuScreen = lazy(async () => import('./screens/MenuScreen'));
 const ReviewScreen = lazy(async () => import('./screens/ReviewScreen'));
 const ContactRequestScreen = lazy(async () => import('./screens/ContactRequestScreen'));
@@ -42,6 +43,7 @@ const GetLocalsRoutes = () => {
                         <Route element={<GetLayout/>}>
                             <Route path={"/business-admin/"}>
                                 <Route path={"home/"} element={<HomeScreen/>}/>
+                                <Route path={"orders/"} element={<OrderScreen/>}/>
                                 <Route path={"menu-items/"} element={<MenuScreen/>}/>
                                 <Route path={"reviews/"} element={<ReviewScreen/>}/>
                                 <Route path={"contact-request/"} element={<ContactRequestScreen/>}/>
