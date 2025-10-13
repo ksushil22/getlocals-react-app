@@ -14,7 +14,7 @@ import GetLoader, { DISPLAY, SPINNERS } from "../../util/customSpinner/GetLoader
 import "./style.css";
 import { COLORS } from "../constants";
 import ItemCard from "./MenuItemCard";
-import OrderBar from "./OrderBar";
+import OrderBar from "./order/OrderBar";
 
 const MemoizedTabPanel = memo(({ category, businessId, currentCategories, handleTabChange, cart, setCart, setCount, count }) => {
     const isVisible = currentCategories.includes(category.id);
@@ -143,7 +143,10 @@ const Template1Menu = () => {
                 <GetLoader spinner={SPINNERS.SKELETON_LIST_REVERSED} display={DISPLAY.AREA} />
             ) : (
                 <>
-                    <OrderBar count={count}/>
+                    <OrderBar
+                        businessId={businessId}
+                        count={count}
+                        cart={cart}/>
                     <StyledTabs>
                         {renderedCategories}
                     </StyledTabs>

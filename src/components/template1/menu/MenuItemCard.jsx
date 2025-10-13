@@ -10,22 +10,21 @@ import {
 import {getImageUrl} from "../../util/Commons";
 
 const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => {
-    const [inputValue, setInputValue] = useState(cart[item.id] || 0);
+    const cartItem = cart[item.id];
+    const quantity = cartItem ? cartItem.count : 0;
+    const [inputValue, setInputValue] = useState(quantity);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    let imageUrl = getImageUrl(businessId, item.imageId);
-    const quantity = cart[item.id] || 0;
+    const imageUrl = getImageUrl(businessId, item.imageId);
 
-    // Throttled resize handler for better performance on low-end devices
     const handleResize = useCallback(() => {
         setIsMobile(window.innerWidth <= 768);
     }, []);
 
-    // Handle screen resize for responsive rendering with throttling
     useEffect(() => {
         let timeoutId;
         const throttledResize = () => {
             clearTimeout(timeoutId);
-            timeoutId = setTimeout(handleResize, 100); // Throttle to 100ms
+            timeoutId = setTimeout(handleResize, 100);
         };
 
         window.addEventListener("resize", throttledResize);
@@ -35,26 +34,30 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
         };
     }, [handleResize]);
 
-    // Memoize updateQuantity to prevent recreation
     const updateQuantity = useCallback((delta) => {
-        setCart(prev => {
-            const currentQty = prev[item.id] || 0;
+        setCart((prev) => {
+            const currentEntry = prev[item.id];
+            const currentQty = currentEntry ? currentEntry.count : 0;
             const newQty = currentQty + delta;
+
             if (newQty <= 0) {
                 const { [item.id]: _, ...rest } = prev;
                 return rest;
             }
-            return { ...prev, [item.id]: newQty };
-        });
-        setCount(prev => prev+delta);
-    }, [item.id, setCart]);
 
-    // Keep input in sync
+            return {
+                ...prev,
+                [item.id]: { object: item, count: newQty }
+            };
+        });
+
+        setCount((prev) => prev + delta);
+    }, [item, setCart, setCount]);
+
     useEffect(() => {
         setInputValue(quantity);
     }, [quantity]);
 
-    // Memoize input handlers
     const handleInputChange = useCallback((e) => {
         setInputValue(e.target.value);
     }, []);
@@ -68,7 +71,6 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
         }
     }, [inputValue, quantity, updateQuantity]);
 
-    // Memoize quantity buttons to prevent recreation
     const QuantityButtons = useMemo(() => (
         <div className="quantity-container">
             <div className={`quantity-slide ${quantity > 0 ? "show" : ""}`}>
@@ -81,14 +83,18 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
                     onBlur={handleInputConfirm}
                     onKeyDown={(e) => e.key === "Enter" && handleInputConfirm()}
                     onFocus={(e) => e.target.select()}
-                    style={{ width: "40px", textAlign: "center", border: "1px solid #ccc", borderRadius: 4 }}
+                    style={{
+                        width: "40px",
+                        textAlign: "center",
+                        border: "1px solid #ccc",
+                        borderRadius: 4
+                    }}
                 />
             </div>
             <Button onClick={() => updateQuantity(1)}>+</Button>
         </div>
     ), [quantity, inputValue, handleInputChange, handleInputConfirm, updateQuantity]);
 
-    // Memoize mobile overlay styles to prevent recreation
     const mobileOverlayStyles = useMemo(() => ({
         position: "absolute",
         top: 5,
@@ -106,7 +112,6 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
         border: "1px solid rgba(255, 255, 255, 0.2)",
     }), []);
 
-    // Memoize image styles to prevent recreation
     const imageStyles = useMemo(() => ({
         objectFit: "cover",
         borderRadius: 2
@@ -114,7 +119,6 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
 
     return (
         <StyledMenuItemCard style={{ position: "relative" }} key={item.id}>
-            {/* Card content */}
             <div style={{ display: "flex", flex: 0.95, flexDirection: "row" }}>
                 <div style={{ display: "flex", alignItems: "center", minWidth: 100 }}>
                     <img
@@ -123,7 +127,8 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
                         height={100}
                         style={imageStyles}
                         src={imageUrl}
-                        alt={item.name}/>
+                        alt={item.name}
+                    />
                 </div>
 
                 <StyledMenuItemInfoDiv>
@@ -135,16 +140,14 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
                 </StyledMenuItemInfoDiv>
             </div>
 
-            {/* Desktop order section */}
             {!isMobile && (
                 <StyledMenuItemOrderDiv style={{ display: "flex", alignItems: "center", gap: 5, zIndex: 10 }}>
                     {QuantityButtons}
                 </StyledMenuItemOrderDiv>
             )}
 
-            {/* Mobile order section */}
             {isMobile && (
-                <div style={{...mobileOverlayStyles, zIndex: 20}}>
+                <div style={{ ...mobileOverlayStyles, zIndex: 20 }}>
                     {QuantityButtons}
                 </div>
             )}

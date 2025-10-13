@@ -53,3 +53,22 @@ export function scrollToSection(sectionId) {
         }
     }
 }
+
+export function calculateTax(total) {
+    return 0.13 * total; // keep as number
+}
+
+export function calculatePlatformFee(total) {
+    return 0.05 * total; // keep as number
+}
+
+/**
+ * Rounds a number to 2 decimals.
+ * @param {number} num - the number to round
+ * @param {boolean} asString - if true, returns "12.00" style string
+ * @returns {number|string} rounded number
+ */
+export function roundTo2(num, asString = false) {
+    const rounded = Math.round(num * 100) / 100; // keeps it numeric
+    return asString ? rounded.toFixed(2) : rounded;
+}

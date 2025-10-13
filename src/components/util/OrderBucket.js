@@ -1,9 +1,10 @@
 import React from "react";
 import {COLORS} from "../template1/constants";
 
-const OrderBucket = () => {
+const OrderBucket = ({style}) => {
     return <div style={{
-        maxHeight: 60
+        maxHeight: 60,
+        ...style
     }}>
         <svg height="50px" viewBox="0 0 1024 1024" fill= {COLORS.PRIMARY_BACKGROUND} className="icon" version="1.1"
              xmlns="http://www.w3.org/2000/svg">
