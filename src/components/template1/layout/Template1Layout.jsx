@@ -4,7 +4,7 @@ import Template1NavBar from "./Template1NavBar";
 import {Outlet} from "react-router-dom";
 import BusinessContactInformation from "./BusinessContactInformation";
 import {StyledContent, StyledFooter} from "../constants";
-import Template1Footer from "../Template1Footer";
+import Template1Footer from "./Template1Footer";
 
 const Template1Layout = () => {
 

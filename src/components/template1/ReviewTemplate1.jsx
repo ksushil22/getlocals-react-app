@@ -6,7 +6,6 @@ import GetAnimation from "../util/GetAnimation";
 import GetRating from "../util/GetRating";
 import {useSendBusinessReviewMutation} from "../../redux/services/businessAPI";
 import {useSelector} from "react-redux";
-import GetNotification from "../util/notification/GetNotification";
 
 const ReviewContainer = styled.div`
     width: 100%;
@@ -106,7 +105,7 @@ const ReviewTemplate1 = ({}) => {
     return <ReviewContainer
         id={'review'}>
         <GetAnimation
-            animateIn={"fadeIn"}
+            animateIn={"fadeInDown"}
             duration={1}>
             <p style={{
                 textAlign: 'center',

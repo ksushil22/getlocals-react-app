@@ -15,8 +15,10 @@ import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import DeleteConfirmationModal from "../../util/modals/DeleteConfirmationModal";
 import "./businessMenu.css"
 import NoDataGIF from "../../util/NoDataGIF";
+import {getImageUrl} from "../../util/Commons";
 
 const ListItemCard = ({item, cardMargin, IconText, setupUpdateItem, setDeleteItemId, editing}) => {
+    const businessId = useSelector((state) => state.business.businessId);
     return <List.Item
         className={"item-card"}
         style={{
@@ -36,7 +38,7 @@ const ListItemCard = ({item, cardMargin, IconText, setupUpdateItem, setDeleteIte
         extra={
             <Image
                 alt={item.image?.name}
-                src={item.image?.url}
+                src={getImageUrl(businessId, item.imageId)}
                 loading={"lazy"}
                 style={{
                     width: 150,

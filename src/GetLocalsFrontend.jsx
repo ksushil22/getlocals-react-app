@@ -14,6 +14,7 @@ import Template1Layout from "./components/template1/layout/Template1Layout";
 import "animate.css/animate.compat.css";
 import {templateIds} from "./components/util/TemplateIdConstants";
 import 'animate.css'
+import {WebSocketProvider} from "./context/WebSocketContext";
 
 const GetLocalsHome = lazy(async () => import('./screens/GetLocalsHome'));
 const RegistrationScreen = lazy(async () => import('./screens/RegistrationScreen'));
@@ -31,49 +32,49 @@ const Template1MenuScreen = lazy(async () => import("./screens/template1/Templat
 const GetLocalsRoutes = () => {
     return (
         <Suspense fallback={<GetLoader/>}>
-            <Provider store={store}>
-                <Routes>
-                    <Route path={"*"} element={<Navigate to={"/"}/>}/>
-                    <Route element={<RequireUnAuth/>}>
-                        <Route path={'/'} element={<GetLocalsHome/>}/>
-                        <Route path={'/authenticate/'} element={<LoginScreen/>}/>
-                        <Route path={'/authenticate/registration'} element={<RegistrationScreen/>}/>
-                    </Route>
-                    <Route element={<RequireAuth/>}>
-                        <Route element={<GetLayout/>}>
-                            <Route path={"/business-admin/"}>
-                                <Route path={"home/"} element={<HomeScreen/>}/>
-                                <Route path={"orders/"} element={<OrderScreen/>}/>
-                                <Route path={"menu-items/"} element={<MenuScreen/>}/>
-                                <Route path={"reviews/"} element={<ReviewScreen/>}/>
-                                <Route path={"contact-request/"} element={<ContactRequestScreen/>}/>
-                                <Route path={"employee-info/"} element={<EmployeeInfoScreen/>}/>
-                            </Route>
+            <Routes>
+                <Route path={"*"} element={<Navigate to={"/"}/>}/>
+                <Route element={<RequireUnAuth/>}>
+                    <Route path={'/'} element={<GetLocalsHome/>}/>
+                    <Route path={'/authenticate/'} element={<LoginScreen/>}/>
+                    <Route path={'/authenticate/registration'} element={<RegistrationScreen/>}/>
+                </Route>
+                <Route element={<RequireAuth/>}>
+                    <Route element={<GetLayout/>}>
+                        <Route path={"/business-admin/"}>
+                            <Route path={"home/"} element={<HomeScreen/>}/>
+                            <Route path={"orders/"} element={<OrderScreen/>}/>
+                            <Route path={"menu-items/"} element={<MenuScreen/>}/>
+                            <Route path={"reviews/"} element={<ReviewScreen/>}/>
+                            <Route path={"contact-request/"} element={<ContactRequestScreen/>}/>
+                            <Route path={"employee-info/"} element={<EmployeeInfoScreen/>}/>
                         </Route>
                     </Route>
-                    <Route path={":businessUsername/"} element={<BusinessNavigator/>}/>
-                    {/* Routes for template 1 */}
-                    <Route element={<Template1Layout/>}>
-                        <Route path={`${templateIds.Template1}`}>
-                            <Route path={"home/"} element={<Template1HomeScreen/>}/>
-                            <Route path={"menu/"} element={<Template1MenuScreen/>}/>
-                        </Route>
+                </Route>
+                <Route path={":businessUsername/"} element={<BusinessNavigator/>}/>
+                {/* Routes for template 1 */}
+                <Route element={<Template1Layout/>}>
+                    <Route path={`${templateIds.Template1}`}>
+                        <Route path={"home/"} element={<Template1HomeScreen/>}/>
+                        <Route path={"menu/"} element={<Template1MenuScreen/>}/>
                     </Route>
-                </Routes>
-            </Provider>
+                </Route>
+            </Routes>
         </Suspense>
     );
 };
 
 const RenderedApp = () => {
     return (
-        <BrowserRouter>
-            <ActiveNavigationMenuProvider>
-                <ConfigProvider theme={{token: {fontFamily: 'Montserrat'}}}>
-                    <GetLocalsRoutes/>
-                </ConfigProvider>
-            </ActiveNavigationMenuProvider>
-        </BrowserRouter>
+        <Provider store={store}>
+            <BrowserRouter>
+                <ActiveNavigationMenuProvider>
+                    <ConfigProvider theme={{token: {fontFamily: 'Montserrat'}}}>
+                        <GetLocalsRoutes/>
+                    </ConfigProvider>
+                </ActiveNavigationMenuProvider>
+            </BrowserRouter>
+        </Provider>
     );
 };
 

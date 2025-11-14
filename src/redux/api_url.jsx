@@ -5,3 +5,6 @@ export const VALIDATE_TOKEN = 'auth/validate-token/'
 export const BUSINESS_API = "business/"
 export const PUBLIC_BUSINESS_API = "business/public/"
 export const USER_PROFILE = "auth/user/user-profile/"
+export const BUSINESS_ORDER_API = "business/order/";
+export const PUBLIC_ORDER_API = "public/order/"
+export const BUSINESS_ORDER_STREAM_API = "order/stream/";

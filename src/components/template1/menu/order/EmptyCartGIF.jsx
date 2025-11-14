@@ -1,6 +1,6 @@
 import React from "react";
 
-export const EmptyCart = () => {
+export const EmptyCart = ({message}) => {
     return (<div style={{
         maxWidth: "100%",
         margin: "auto",
@@ -74,6 +74,7 @@ export const EmptyCart = () => {
                         46 11 60 7 37 8 150 1 157 -3 4 -6 -16 -6 -44z"/>
                 </g>
             </svg>
+        <span>{message}</span>
 
         </div>);
 };

@@ -27,6 +27,9 @@ module.exports = function (webpackEnv, { mode }) {
             filename: "[name].bundle.js",
             publicPath: '/'
         },
+        devServer: {
+            historyApiFallback: true,
+        },
         plugins: [
             new HTMLWebpackPlugin({
                 template: './src/GetLocalsFrontend.html',
@@ -35,6 +38,7 @@ module.exports = function (webpackEnv, { mode }) {
             new webpack.DefinePlugin({
                 "process.env": {
                     BASE_API_URL: JSON.stringify(env.BASE_API_URL),
+                    WS_URL: JSON.stringify(env.WS_URL),
                     NODE_ENV: mode === "production"?
                         JSON.stringify("production"):
                         JSON.stringify("development")
@@ -66,9 +70,6 @@ module.exports = function (webpackEnv, { mode }) {
         },
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx']
-        },
-        devServer: {
-            historyApiFallback:true
         }
     }
 

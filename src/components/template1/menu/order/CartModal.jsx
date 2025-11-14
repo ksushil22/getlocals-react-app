@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ModalPopup from "../../../util/modals/ModalPopup";
-import CartList from "./CartComponents";
+import CartList from "./Cart";
 
 const CartModal = ({cart, showCart, setShowCart, businessId}) => {
 
@@ -10,7 +10,15 @@ const CartModal = ({cart, showCart, setShowCart, businessId}) => {
             handleCancel={() => setShowCart(false)}
             closable={true}
             showCancel={false}
-            showTitleIcon={false}>
+            showTitleIcon={false}
+            disableScreenTouch={false}
+            style={{
+                maxHeight: "80vh",
+                overflowY: "auto",
+                overflowX: "hidden",
+                objectFit: "contain",
+                margin: "auto",
+            }}>
             <CartList cart={cart} businessId={businessId} />
         </ModalPopup>);
 }

@@ -16,6 +16,7 @@ function ModalPopup(
         children,
         footer,
         closable,
+        style,
         submitButtonText,
         showTitleIcon=true,
         showCancel=true,
@@ -81,6 +82,9 @@ function ModalPopup(
                 },
                 body: {
                     textAlign: 'center'
+                },
+                content:{
+                    ...style,
                 }
             }}
         >

@@ -1,11 +1,11 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {useGetFooterContentQuery} from "../../redux/services/businessAPI";
+import {useGetFooterContentQuery} from "../../../redux/services/businessAPI";
 import styled from "styled-components";
 import {useLocation, useNavigate} from "react-router-dom";
-import {COLORS} from "./constants";
-import {items} from "./layout/Template1NavBar";
-import {IconLink} from "./Util";
+import {COLORS} from "../constants";
+import {items} from "./Template1NavBar";
+import {IconLink} from "../Util";
 import {FacebookFilled, InstagramFilled, YoutubeFilled} from "@ant-design/icons";
 
 
