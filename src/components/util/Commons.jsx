@@ -1,5 +1,6 @@
 import {PUBLIC_BUSINESS_API} from "../../redux/api_url";
 import {useLocation} from "react-router-dom";
+import { getImageUrl as getImageUrlFromUtils } from "../../utils/imageUtils";
 
 export const MainHeadingStyle= {
     fontWeight: 'bolder',
@@ -26,10 +27,8 @@ export function getMapUrl(address) {
     return `https://www.google.com/maps/search/?api=1&query=${formattedAddress}`;
 }
 
-export function getImageUrl(businessId, imageId) {
-    const BASE_URL = process.env.BASE_API_URL;
-    return `${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/image/${imageId}/`
-}
+// Re-export from imageUtils for backward compatibility
+export const getImageUrl = getImageUrlFromUtils;
 
 export function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);

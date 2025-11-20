@@ -40,10 +40,11 @@ export const WebSocketProvider = ({ children }) => {
 
         socket.onmessage = (event) => {
             try {
-                console.log("Order Received:", event.data);
                 const data = JSON.parse(event.data);
                 setNewOrder(data);
+                console.log("New Order: ", data)
             } catch (err) {
+                console.log(err);
                 console.warn("Invalid WebSocket message:", event.data);
             }
         };
@@ -56,7 +57,6 @@ export const WebSocketProvider = ({ children }) => {
         socket.onclose = () => {
             console.log("⚠️ WebSocket closed");
             setIsConnected(false);
-            handleReconnect();
         };
     }, [token]);
 

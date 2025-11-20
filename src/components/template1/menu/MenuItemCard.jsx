@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo, memo } from "react";
-import {Button, Image, Input} from "antd";
+import {Button, Input} from "antd";
 import {
     StyledMenuItemCard,
     StyledMenuItemInfoDiv,
@@ -7,14 +7,13 @@ import {
     StyledMenuItemDescription,
     StyledMenuItemOrderDiv
 } from "./StyledComponentsMenu";
-import {getImageUrl} from "../../util/Commons";
+import PreviewableImage from "../../util/PreviewableImage";
 
 const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => {
     const cartItem = cart[item.id];
     const quantity = cartItem ? cartItem.count : 0;
     const [inputValue, setInputValue] = useState(quantity);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const imageUrl = getImageUrl(businessId, item.imageId);
 
     const handleResize = useCallback(() => {
         setIsMobile(window.innerWidth <= 768);
@@ -121,13 +120,15 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
         <StyledMenuItemCard style={{ position: "relative" }} key={item.id}>
             <div style={{ display: "flex", flex: 0.95, flexDirection: "row" }}>
                 <div style={{ display: "flex", alignItems: "center", minWidth: 100 }}>
-                    <img
-                        loading="lazy"
+                    <PreviewableImage
+                        businessId={businessId}
+                        imageId={item.imageId}
+                        alt={item.name}
                         width={100}
                         height={100}
                         style={imageStyles}
-                        src={imageUrl}
-                        alt={item.name}
+                        lazy={true}
+                        showZoomHint={!isMobile}
                     />
                 </div>
 

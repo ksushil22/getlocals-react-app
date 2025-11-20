@@ -40,7 +40,11 @@ const GetLocalsRoutes = () => {
                     <Route path={'/authenticate/registration'} element={<RegistrationScreen/>}/>
                 </Route>
                 <Route element={<RequireAuth/>}>
-                    <Route element={<GetLayout/>}>
+                    <Route element={
+                        <WebSocketProvider>
+                            <GetLayout/>
+                        </WebSocketProvider>
+                    }>
                         <Route path={"/business-admin/"}>
                             <Route path={"home/"} element={<HomeScreen/>}/>
                             <Route path={"orders/"} element={<OrderScreen/>}/>

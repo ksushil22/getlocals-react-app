@@ -2,6 +2,7 @@ import React from 'react';
 import {useGetEmployeesQuery} from "../../redux/services/businessAPI";
 import GetAnimation from "../util/GetAnimation";
 import styled from "styled-components";
+import { getImageUrl } from "../../utils/imageUtils";
 
 const EmployeeListContainer = styled.div`
   display: flex;
@@ -70,7 +71,7 @@ const TeamTemplate1 = ({businessId}) => {
                     <EmployeeContainer key={employee.id}>
                         <EmployeeImage
                             loading={"lazy"}
-                            src={employee.image?.url}
+                            src={employee.image?.uid ? getImageUrl(businessId, employee.image.uid) : employee.image?.url}
                             alt={employee.displayName}
                         />
                         <EmployeeInfo>

@@ -12,7 +12,6 @@ export default function () {
     }, []);
 
 
-    return <WebSocketProvider>
-        <Orders />
-    </WebSocketProvider>
+    return <Orders />
+
 }

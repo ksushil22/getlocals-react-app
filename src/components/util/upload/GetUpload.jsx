@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {Typography, Upload} from "antd";
+import {Typography, Upload, message} from "antd";
 import ModalPopup from "../modals/ModalPopup";
 import "./upload.css";
 import {useDeleteImageMutation, useGetBusinessImagesQuery} from "../../../redux/services/businessAPI";
 import GetLoader, {DISPLAY, SPINNERS} from "../customSpinner/GetLoader";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCloudArrowUp} from "@fortawesome/free-solid-svg-icons";
+import {shouldGenerateThumbnail} from "../../../constants/imageTypes";
 
 const {Text} = Typography;
 
@@ -17,6 +18,15 @@ const getBase64 = (file) =>
         reader.onload = () => resolve(reader.result);
         reader.onerror = (error) => reject(error);
     });
+
+const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
 
 
 /**
@@ -29,6 +39,7 @@ const getBase64 = (file) =>
  * @param listType - picture-card, picture
  * @param initialFileList - initial images.
  * @param updateInitialList - do we need to update the initial List or not
+ * @param generateThumbnail - whether to generate thumbnail for uploaded images
  * @returns {JSX.Element}
  */
 export default function ({
@@ -39,7 +50,8 @@ export default function ({
                              type = "MENU",
                              listType = 'picture-card',
                              initialFileList = null,
-                             updateInitialList = false
+                             updateInitialList = false,
+                             generateThumbnail = null
                          }) {
     const businessId = useSelector((state) => state.business.businessId)
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -48,6 +60,11 @@ export default function ({
     const [fileList, setFileList] = useState([]);
     const [deleteFile, setDeleteFile] = useState(false);
     const [deleteUid, setDeleteUid] = useState("");
+    
+    // Determine whether to generate thumbnails
+    const shouldGenerateThumbnailForType = generateThumbnail !== null 
+        ? generateThumbnail 
+        : shouldGenerateThumbnail(type);
     const {
         data: images,
         isLoading: loadingImages
@@ -90,10 +107,59 @@ export default function ({
             setFileList(newFileList);
         }
         if (file.status === 'done') {
-            setFileList(newFileList)
+            const response = file.response;
+            
+            // Handle both old and new response formats
+            const imageId = response.imageId || response.message;
+            const thumbnailId = response.thumbnailId;
+            
+            // Update file list with proper IDs
+            const updatedFileList = newFileList.map(f => {
+                if (f.uid === file.uid) {
+                    return {
+                        ...f,
+                        response: {
+                            ...response,
+                            imageId,
+                            thumbnailId
+                        }
+                    };
+                }
+                return f;
+            });
+            
+            setFileList(updatedFileList);
+            
             if (setUploadImageId) {
-                setUploadImageId(file.response.message);
+                setUploadImageId(imageId);
             }
+            
+            // Show optimization feedback if available
+            if (response.compressionRatio) {
+                const savedBytes = response.originalSize - response.optimizedSize;
+                const savedSize = formatBytes(savedBytes);
+                const compressionPercent = response.compressionRatio.toFixed(0);
+                
+                message.success({
+                    content: (
+                        <div>
+                            <div>Image uploaded successfully!</div>
+                            <div style={{ fontSize: '12px', marginTop: '4px' }}>
+                                Optimized: {compressionPercent}% smaller ({savedSize} saved)
+                                {thumbnailId && " • Thumbnail generated"}
+                            </div>
+                        </div>
+                    ),
+                    duration: 4
+                });
+            } else {
+                // Fallback for old response format
+                message.success('Image uploaded successfully');
+            }
+        }
+        
+        if (file.status === 'error') {
+            message.error(`${file.name} upload failed: ${file.error?.message || 'Unknown error'}`);
         }
     };
 
@@ -128,6 +194,9 @@ export default function ({
                 action={`${process.env.BASE_API_URL}business/${businessId}/upload/${type}/`}
                 headers={{
                     'Authorization': `Bearer ${sessionStorage.getItem("access")}`
+                }}
+                data={{
+                    generateThumbnail: shouldGenerateThumbnailForType ? 'true' : 'false'
                 }}
                 accept={accept}
                 listType={listType}

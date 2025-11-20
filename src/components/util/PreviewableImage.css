@@ -1,0 +1,85 @@
+.previewable-image-container {
+    overflow: hidden;
+    background-color: #f0f0f0;
+    transition: transform 0.3s ease;
+}
+
+.previewable-image-container:hover {
+    transform: scale(1.02);
+}
+
+.previewable-image-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    border: 1px solid #e8e8e8;
+    color: #999;
+}
+
+.error-content {
+    text-align: center;
+    font-size: 12px;
+}
+
+.preview-mask {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.zoom-hint-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 16px;
+    pointer-events: none;
+    animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Ant Design Image Preview Customization */
+.ant-image-preview-mask {
+    backdrop-filter: blur(10px);
+}
+
+.ant-image-preview-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .previewable-image-container:hover {
+        transform: none; /* Disable hover scale on mobile */
+    }
+    
+    .zoom-hint-overlay {
+        display: none; /* Hide zoom hint on mobile */
+    }
+    
+    .preview-mask {
+        font-size: 12px;
+    }
+    
+    .preview-mask .anticon {
+        font-size: 20px !important;
+    }
+}

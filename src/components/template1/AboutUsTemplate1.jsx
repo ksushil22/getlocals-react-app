@@ -1,13 +1,11 @@
 import React from 'react';
 import {COLORS} from "./constants";
-import {Image} from "antd";
-import {getImageUrl} from "../util/Commons";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import GetAnimation from "../util/GetAnimation";
+import { getImageUrl } from "../../utils/imageUtils";
+import {Image} from "antd";
 
 const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName}) => {
-    const imageUrl = getImageUrl(businessId, businessOwnerImageId)
-
     const screens = useBreakpoint();
 
     return <div style={{
@@ -43,13 +41,13 @@ const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName
                     animateIn={"fadeInLeft"}
                     duration={1}>
                     <Image
+                        src={getImageUrl(businessId, businessOwnerImageId)}
                         height={'70vh'}
                         width={'auto'}
                         style={{
                             objectFit: 'contain'
                         }}
-                        src={imageUrl}
-                        alt="image"
+                        alt={`${businessName} owner`}
                         loading="lazy"
                         preview={false}
                     />

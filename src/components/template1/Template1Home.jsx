@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Row} from "antd";
 import {useGetBusinessImagesQuery, useGetPublicBusinessInfoQuery} from "../../redux/services/businessAPI";
 import GetLoader, {DISPLAY, SPINNERS} from "../util/customSpinner/GetLoader";
-import GetCarousel from "../util/carousel/GetCarousel";
+import ProgressiveCarousel from "../util/carousel/ProgressiveCarousel";
 import {COLORS, StyledDiv} from "./constants";
 import AboutUsTemplate1 from "./AboutUsTemplate1";
 import TeamTemplate1 from "./TeamTemplate1";
@@ -48,17 +48,8 @@ const Template1Home = ({
 
     useEffect(() => {
         if (carouselImages) {
-            const carouselImagesFormatted = [];
-            carouselImages.map((carouselImage) => {
-                carouselImagesFormatted.push({
-                    uid: carouselImage?.id,
-                    name: carouselImage?.name,
-                    status: 'done',
-                    url: `data:${carouselImage?.extension};base64,${carouselImage?.image}`
-                });
-            })
-
-            setImages(carouselImagesFormatted);
+            // Use the image objects directly for progressive loading
+            setImages(carouselImages);
         }
 
     }, [carouselImages, setImages])
@@ -72,7 +63,11 @@ const Template1Home = ({
         {loadingCarouselImages ? (
             <GetLoader spinner={SPINNERS.ROTATING_DOT_SPINNER} display={DISPLAY.AREA}/>
         ) : (
-            <GetCarousel images={images} background={COLORS.PRIMARY_BACKGROUND}/>
+            <ProgressiveCarousel 
+                images={images} 
+                businessId={businessId}
+                background={COLORS.PRIMARY_BACKGROUND}
+            />
         )}
         <AboutUsTemplate1 about={businessData?.aboutUs}
                           businessId={businessId}

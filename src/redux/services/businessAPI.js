@@ -34,6 +34,19 @@ export const businessAPI = rootAPI.injectEndpoints({
                 method: 'DELETE'
             })
         }),
+        // New thumbnail endpoints
+        getImageThumbnail: builder.query({
+            query: ({businessId, imageId}) => 
+                `${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/image/${imageId}/thumbnail/`
+        }),
+        getBusinessThumbnails: builder.query({
+            query: (businessId) => 
+                `${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/thumbnails/`
+        }),
+        getThumbnailsByType: builder.query({
+            query: (businessId) => 
+                `${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/images/THUMBNAIL/`
+        }),
         getBusinessItemCategories: builder.query({
             query: (id) => `${BASE_URL}${PUBLIC_BUSINESS_API}${id}/item-category/`,
             providesTags: ['categories']
@@ -246,6 +259,9 @@ export const {
     useGetBusinessImagesQuery,
     useUpdateAboutUsMutation,
     useDeleteImageMutation,
+    useGetImageThumbnailQuery,
+    useGetBusinessThumbnailsQuery,
+    useGetThumbnailsByTypeQuery,
     useGetBusinessItemCategoriesQuery,
     useCreateBusinessItemCategoryMutation,
     useDeleteBusinessItemCategoryMutation,
