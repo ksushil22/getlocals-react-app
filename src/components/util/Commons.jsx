@@ -22,9 +22,16 @@ export function formatPhoneNumber(phoneNumber) {
     return `(${areaCode}) ${firstPart}-${secondPart}`;
 }
 
-export function getMapUrl(address) {
-    const formattedAddress = encodeURIComponent(address)
-    return `https://www.google.com/maps/search/?api=1&query=${formattedAddress}`;
+export function getMapUrl(address, mapType = 'google') {
+    const formattedAddress = encodeURIComponent(address);
+    
+    if (mapType === 'apple') {
+        // Apple Maps URL scheme
+        return `https://maps.apple.com/?q=${formattedAddress}`;
+    } else {
+        // Google Maps URL (default)
+        return `https://www.google.com/maps/search/?api=1&query=${formattedAddress}`;
+    }
 }
 
 // Re-export from imageUtils for backward compatibility

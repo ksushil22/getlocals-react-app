@@ -3,12 +3,13 @@ import {useSelector} from "react-redux";
 import {COLORS, StyledDiv} from "../constants";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import {useGetContactInformationQuery} from "../../../redux/services/businessAPI";
-import {IconLink} from "../Util";
+import {IconLink, MapLink} from "../Util";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FacebookFilled, InstagramFilled, YoutubeFilled} from "@ant-design/icons";
+import {FacebookFilled, InstagramFilled, YoutubeFilled, AppleFilled, GoogleOutlined} from "@ant-design/icons";
 import {faEnvelope, faMapLocation, faPhone} from "@fortawesome/free-solid-svg-icons";
 import {formatPhoneNumber, getMapUrl} from "../../util/Commons";
 import GetLoader, {SPINNERS} from "../../util/customSpinner/GetLoader";
+import { Dropdown } from 'antd';
 import "./style.css"
 
 const BusinessContactInformation = () => {
@@ -18,11 +19,11 @@ const BusinessContactInformation = () => {
         = useGetContactInformationQuery({businessId: businessId})
     const screens = useBreakpoint();
     const largeScreen = !(screens.lg || screens.xl || screens.xxl);
+    
     if (loadingContactInformation) {
         return <GetLoader spinner={SPINNERS.ROTATING_DOT_SPINNER} />
     }
 
-    const mapUrl = getMapUrl(contactInformation?.address)
 
 
     return <StyledDiv className={"container"} style={BusinessContactInformationStyles.container}>
@@ -38,9 +39,10 @@ const BusinessContactInformation = () => {
                 textTransform: 'uppercase',
                 marginTop: largeScreen ? 10 : 0
             }}>
-                <IconLink text={contactInformation?.address}
-                          href={mapUrl}
-                          icon={<FontAwesomeIcon icon={faMapLocation}/>} />
+                <MapLink
+                    address={contactInformation?.address}
+                    icon={<FontAwesomeIcon icon={faMapLocation}/>}
+                />
                 <IconLink text={formatPhoneNumber(contactInformation?.phone1)} icon={<FontAwesomeIcon icon={faPhone} /> }
                           href={`tel:${contactInformation?.phone1}`}/>
                 <IconLink text={contactInformation?.email} icon={<FontAwesomeIcon icon={faEnvelope}/>}
