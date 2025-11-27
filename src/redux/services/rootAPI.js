@@ -25,11 +25,10 @@ const baseQueryWithReauth = async(args, api, extraOption, overrideRoute) => {
     let result = await baseQuery(args, api, extraOption)
 
     if (result?.data?.message){
-        notification.success({
-            message: "Success!",
-            description: result.data.message,
-            duration: 2
-
+        message.open({
+            content: result.data?.message,
+            duration: 2.5,
+            type: "success"
         })
     }else if(result?.error?.status === 401) {
         sessionStorage.setItem("access", "")
@@ -63,10 +62,11 @@ const baseQueryWithReauth = async(args, api, extraOption, overrideRoute) => {
             api.dispatch(logOut())
         }
     }else if (result?.error) {
+        console.log("Got an error. Opening a message for it.")
         message.open({
             content: result.error?.data,
             duration: 2.5,
-            className: 'antd-error'
+            type: "error"
         });
     }
     return result

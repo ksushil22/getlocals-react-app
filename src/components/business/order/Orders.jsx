@@ -11,21 +11,32 @@ import {
     HistoricalOrdersContainer
 } from "./OrderComponents";
 import {useWebSocket} from "../../../context/WebSocketContext";
+import {
+    useLazyGetLast4HoursPendingOrdersQuery, useUpdateOrderStatusMutation
+} from "../../../redux/services/orderAPI";
+import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
+import {useSelector} from "react-redux";
 
 
 export default function Orders() {
     const { newOrder, isConnected, error, connect, disconnect } = useWebSocket();
+    const businessId = useSelector((state) => state.business.businessId)
 
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [showHistorical, setShowHistorical] = useState(false);
+    const [triggerPendingOrderQuery, {
+        data: pendingOrders,
+        isLoading: loadingPendingOrders
+    }]   = useLazyGetLast4HoursPendingOrdersQuery()
+    const [updateOrderStatus, {isLoading: updatingOrderStatus}] = useUpdateOrderStatusMutation();
 
     useEffect(() => {
         console.log("New Order: ", newOrder);
         if (newOrder) {
             setOrders(prevOrders => {
                 const existingOrderIndex = prevOrders.findIndex(order => order.orderNumber === newOrder.orderNumber);
-                
+
                 if (existingOrderIndex !== -1) {
                     // Update existing order
                     const updatedOrders = [...prevOrders];
@@ -33,12 +44,22 @@ export default function Orders() {
                     return updatedOrders;
                 } else {
                     // Add new order at the beginning
-                    const orderWithStatus = { ...newOrder, status: 'PENDING', orderDate: new Date().toISOString() };
+                    const orderWithStatus = { ...newOrder };
                     return [orderWithStatus, ...prevOrders];
                 }
             });
         }
     }, [newOrder]);
+
+    useEffect(() => {
+        if (pendingOrders != null && pendingOrders.length > 0) {
+            setOrders(pendingOrders)
+        }
+    }, [pendingOrders])
+
+    useEffect(() => {
+        if (isConnected) triggerPendingOrderQuery(businessId);
+    }, [businessId, triggerPendingOrderQuery, isConnected])
 
     // Keep selected order in sync with orders array
     useEffect(() => {
@@ -50,31 +71,24 @@ export default function Orders() {
         }
     }, [orders]);
 
-    const handleAcceptOrder = (orderId) => {
-        setOrders(prevOrders => 
-            prevOrders.map(order => 
-                order.orderNumber === orderId ? { ...order, status: 'PREPARING' } : order
-            )
-        );
-        // TODO: Send accept notification to backend
-    };
+    const handleUpdateOrderStatus = async (orderId, newStatus) => {
+        await updateOrderStatus({
+            orderId: orderId,
+            businessId: businessId,
+            status: {
+                "newOrderStatus": newStatus
+            }
+        }).then( () => {
+                setOrders(prevOrders =>
+                    prevOrders.map(order =>
+                        order.orderNumber === orderId ? { ...order, status: newStatus } : order
+                    )
+                )
 
-    const handleRejectOrder = (orderId) => {
-        setOrders(prevOrders => 
-            prevOrders.map(order => 
-                order.orderNumber === orderId ? { ...order, status: 'DECLINED' } : order
-            )
-        );
-        // TODO: Send reject notification to backend
-    };
-
-    const handleCompleteOrder = (orderId) => {
-        setOrders(prevOrders => 
-            prevOrders.map(order => 
-                order.orderNumber === orderId ? { ...order, status: 'COMPLETED' } : order
-            )
-        );
-        // TODO: Send complete notification to backend
+            if (newStatus === 'COMPLETED') {
+                setSelectedOrder(null)
+            }
+        });
     };
 
     const getTotalItems = (items) => {
@@ -82,12 +96,12 @@ export default function Orders() {
     };
 
     // Separate active and historical orders
-    const activeOrders = orders.filter(order => 
+    const activeOrders = orders.filter(order =>
         order.status === 'PENDING' || order.status === 'PREPARING'
     );
-    
-    const historicalOrders = orders.filter(order => 
-        order.status === 'COMPLETED' || order.status === 'DECLINED'
+
+    const historicalOrders = orders.filter(order =>
+        order.status === 'COMPLETED' || order.status === 'DECLINED' || order.status === 'READY'
     );
 
     return (
@@ -102,8 +116,6 @@ export default function Orders() {
                             {isConnected ? "Pause Orders" : "Accept Orders"}
                         </OrderStatusButton>
                     </ConnectionStatus>
-
-                    {orders.length > 0 && <ClearButton onClick={() => setOrders([])}>Clear Orders</ClearButton>}
                 </ConnectionWrapper>
             </Header>
 
@@ -113,14 +125,20 @@ export default function Orders() {
                 <OrdersListPanel>
                     <ActiveOrdersContainer>
                         <OrderListHeader>Active Orders ({activeOrders.length})</OrderListHeader>
-                        {activeOrders.length === 0 ? (
+                        {loadingPendingOrders ? (
+                            <GetLoader display={DISPLAY.AREA}
+                                       spinner={SPINNERS.SKELETON}
+                                       text={'Loading Pending Orders...'}
+                                        />
+                        )
+                            : activeOrders.length === 0 ? (
                             <EmptyListState>
                                 <p>No active orders</p>
                                 <p>New orders will appear here in real-time.</p>
                             </EmptyListState>
                         ) : (
                             activeOrders.map((order) => (
-                                <OrderListItem 
+                                <OrderListItem
                                     key={order.orderNumber}
                                     isSelected={selectedOrder?.orderNumber === order.orderNumber}
                                     onClick={() => setSelectedOrder(order)}
@@ -153,7 +171,7 @@ export default function Orders() {
                                 onClick={() => setShowHistorical(!showHistorical)}
                             >
                                 <span>Order History ({historicalOrders.length})</span>
-                                <span style={{ 
+                                <span style={{
                                     fontSize: '16px',
                                     transition: 'transform 0.3s ease',
                                     transform: showHistorical ? 'rotate(180deg)' : 'rotate(0deg)'
@@ -207,10 +225,10 @@ export default function Orders() {
                                 </CustomerInfo>
                                 {selectedOrder.status === 'PENDING' && (
                                     <ActionButtons>
-                                        <AcceptButton onClick={() => handleAcceptOrder(selectedOrder.orderNumber)}>
+                                        <AcceptButton loading={updatingOrderStatus} onClick={() => handleUpdateOrderStatus(selectedOrder.orderNumber, 'PREPARING')}>
                                             Accept Order
                                         </AcceptButton>
-                                        <RejectButton onClick={() => handleRejectOrder(selectedOrder.orderNumber)}>
+                                        <RejectButton loading={updatingOrderStatus} onClick={() => handleUpdateOrderStatus(selectedOrder.orderNumber, 'DECLINED')}>
                                             Decline Order
                                         </RejectButton>
                                     </ActionButtons>
@@ -219,8 +237,18 @@ export default function Orders() {
                                 {selectedOrder.status === 'PREPARING' && (
                                     <>
                                         <ActionButtons>
-                                            <AcceptButton onClick={() => handleCompleteOrder(selectedOrder.orderNumber)}>
-                                                Mark as Completed
+                                            <AcceptButton loading={updatingOrderStatus} onClick={() => handleUpdateOrderStatus(selectedOrder.orderNumber, 'READY')}>
+                                                Mark Ready
+                                            </AcceptButton>
+                                        </ActionButtons>
+                                    </>
+                                )}
+
+                                {selectedOrder.status === 'READY' && (
+                                    <>
+                                        <ActionButtons>
+                                            <AcceptButton loading={updatingOrderStatus} onClick={() => handleUpdateOrderStatus(selectedOrder.orderNumber, 'COMPLETED')}>
+                                                Mark Completed
                                             </AcceptButton>
                                         </ActionButtons>
                                     </>
@@ -238,11 +266,17 @@ export default function Orders() {
                                     </OrderStatusBadge>
                                 )}
 
+                                {selectedOrder.additionalInstructions && (
+                                    <AdditionalInstructions>
+                                        <h3>Additional Instructions</h3>
+                                        <p>{selectedOrder.additionalInstructions}</p>
+                                    </AdditionalInstructions>
+                                )}
+
                                 <ItemsList>
                                     <h3>Order Items</h3>
                                     <div className={"items"} style={{
                                         backgroundColor: '#f8f9fa',
-                                        padding: 10
                                     }}>
                                         {selectedOrder.items.map((item, index) => (
                                             <ItemRow key={index}>
@@ -253,13 +287,6 @@ export default function Orders() {
 
                                     </div>
                                 </ItemsList>
-
-                                {selectedOrder.additionalInstructions && (
-                                    <AdditionalInstructions>
-                                        <h3>Additional Instructions</h3>
-                                        <p>{selectedOrder.additionalInstructions}</p>
-                                    </AdditionalInstructions>
-                                )}
 
                             </OrderDetailContent>
                         </>

@@ -28,6 +28,7 @@ const EmployeeInfoScreen = lazy(async () => import('./screens/EmployeeInfoScreen
 const BusinessNavigator = lazy(async () => import("./screens/BusinessNavigator"));
 const Template1HomeScreen = lazy(async () => import("./screens/template1/Template1HomeScreen"));
 const Template1MenuScreen = lazy(async () => import("./screens/template1/Template1MenuScreen"));
+const OrderStatusScreen = lazy(async () => import('./screens/OrderStatusScreen'));
 
 const GetLocalsRoutes = () => {
     return (
@@ -57,6 +58,7 @@ const GetLocalsRoutes = () => {
                 </Route>
                 <Route path={":businessUsername/"} element={<BusinessNavigator/>}/>
                 {/* Routes for template 1 */}
+                <Route path={"order-status/:orderNumber"} element={<OrderStatusScreen/>}/>
                 <Route element={<Template1Layout/>}>
                     <Route path={`${templateIds.Template1}`}>
                         <Route path={"home/"} element={<Template1HomeScreen/>}/>

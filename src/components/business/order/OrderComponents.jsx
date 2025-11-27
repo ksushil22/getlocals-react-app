@@ -96,20 +96,6 @@ export const StatusIndicator = styled.div`
   animation: ${({ isconnected }) => (isconnected ? pulse : 'none')} 2s ease-in-out infinite;
 `;
 
-export const ClearButton = styled(Button)`
-  padding: 8px 16px;
-  background-color: #ff7875;
-  color: #fff;
-  border: 1px solid #ff7875;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-
-  &:hover {
-    background-color: #ff4d4f;
-  }
-`;
-
 export const ErrorMessage = styled.div`
   background-color: #ffebee;
   color: #c62828;
@@ -241,8 +227,8 @@ export const OrderListItem = styled.div`
         border-left: 4px solid #52c41a;
     `}
 
-    ${({ status }) => status === 'REJECTED' && `
-        border-left: 4px solid #ff7875;
+    ${({ status }) => status === 'READY' && `
+        border-left: 4px solid green;
     `}
 
     ${({ status }) => status === 'DECLINED' && `
@@ -327,7 +313,7 @@ export const CustomerInfo = styled.div`
 `;
 
 export const ItemsList = styled.div`
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
     h3 {
         margin-bottom: 16px;
@@ -362,15 +348,15 @@ export const ItemName = styled.span`
 `;
 
 export const AdditionalInstructions = styled.div`
-    background-color: #fff3e0;
+    background-color: #f4f4f4;
     border-radius: 8px;
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 
     h3 {
         margin-top: 0;
         margin-bottom: 12px;
-        color: #e65100;
         font-size: 18px;
     }
 
@@ -405,6 +391,7 @@ export const AcceptButton = styled(Button)`
     &:hover {
         background-color: #73d13d !important;
         border-color: #73d13d !important;
+        color: #fff !important;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3);
     }
@@ -476,10 +463,10 @@ export const OrderStatusBadge = styled.div`
         border: 1px solid #b7eb8f;
     `}
 
-    ${({ status }) => status === 'REJECTED' && `
-        background-color: #fff2f0;
-        color: #ff7875;
-        border: 1px solid #ffccc7;
+    ${({ status }) => status === 'READY' && `
+        background-color: #f6ffed;
+        color: green;
+        border: 1px solid green;
     `}
 
     ${({ status }) => status === 'DECLINED' && `

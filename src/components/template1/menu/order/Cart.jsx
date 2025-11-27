@@ -13,24 +13,24 @@ import {calculatePlatformFee, calculateTax, getImageUrl, roundTo2} from "../../.
 import {EmptyCart} from "./EmptyCartGIF";
 import {DollarOutlined, ShoppingCartOutlined, UserOutlined} from "@ant-design/icons";
 import GetAnimation from "../../../util/GetAnimation";
-import "./hide-error-message.css";
 import {usePlaceOrderMutation} from "../../../../redux/services/orderAPI";
+import {useNavigate} from "react-router-dom";
 
 const UserInfoForm = ({form, loading, onFinish}) => {
-    const rules = [{required: true}];
+    const rules = [{required: true, message: ''}];
 
     return (
         <StyledForm form={form} layout="vertical" onFinish={onFinish}>
             <StyledFormItem name="name" rules={rules} validateTrigger="onBlur">
-                <StyledInput placeholder="Full Name"/>
+                <StyledInput placeholder="Full Name (required)"/>
+            </StyledFormItem>
+
+            <StyledFormItem name="phoneNo" rules={rules} validateTrigger="onBlur">
+                <StyledInput inputMode="numeric" pattern="[0-9]*" placeholder="Phone Number (required)"/>
             </StyledFormItem>
 
             <StyledFormItem name="email" validateTrigger="onBlur">
                 <StyledInput type="email" placeholder="Email Address"/>
-            </StyledFormItem>
-
-            <StyledFormItem name="phoneNo" rules={rules} validateTrigger="onBlur">
-                <StyledInput inputMode="numeric" pattern="[0-9]*" placeholder="Phone Number"/>
             </StyledFormItem>
 
             <StyledFormItem name={"additionalInstructions"}>
@@ -55,7 +55,7 @@ const CartList = memo(({cart, businessId}) => {
     const [platformFee, setPlatformFee] = useState(0);
     const [form] = Form.useForm();
     const [placeOrder, {isLoading: placingOrder}] = usePlaceOrderMutation()
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         let sum = 0;
@@ -68,22 +68,6 @@ const CartList = memo(({cart, businessId}) => {
     }, [cart]);
 
     const sendOrderToRestaurant = async () => {
-        /*
-        *
-        private String name;
-        private String email;
-        private Long phoneNo;
-        private String additionalInstructions;
-        private List<OrderItemDTO> items;
-        *
-        *
-        public static class OrderItemDTO {
-        private String itemId;
-        private String instructions;
-        private int quantity;
-        }
-        */
-
         let items = [];
         cartEntries.map((item) => {
             console.log(item);
@@ -108,6 +92,7 @@ const CartList = memo(({cart, businessId}) => {
             }).then(({data, error}) => {
                 if (data) {
                     console.log(data);
+                    navigate(`/order-status/${data.orderNumber}/`)
                 } else if (error) {
                     console.log(error);
                 }

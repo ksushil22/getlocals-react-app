@@ -97,5 +97,13 @@ export const StyledInput = styled(Input)`
 
 export const StyledFormItem = styled(Form.Item)`
     margin-bottom: 10px;
+    /* Apply red border to input when validation fails */
+    &.ant-form-item-has-error .ant-input {
+        border-bottom: 1px solid #ff4d4f !important;
+    }
+    /* Remove the error message visual space */
+    .ant-form-item-explain {
+        display: none;
+    }
 `;
 
