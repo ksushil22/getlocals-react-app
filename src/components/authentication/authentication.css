@@ -1,0 +1,44 @@
+
+/* Set the background to fully transparent */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: none !important;
+    transition: background-color 5000s ease-in-out 0s;
+    font-weight: 500 !important;
+    font-size: 16px !important;
+    color: #ece7e2 !important;
+}
+
+.authentication-select .ant-select-selector {
+    text-align: left !important;
+    color: #ece7e2;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.authentication-select .ant-select-selector:focus {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+.expandable-element {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.expandable-element.expanded {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+body {
+    background-color: var(--primary-background);
+}
+
+.authentication-select .ant-select-dropdown {
+    background: white !important;
+}

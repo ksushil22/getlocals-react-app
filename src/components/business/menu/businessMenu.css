@@ -1,0 +1,59 @@
+.ant-tabs-tab {
+    color: black !important;
+}
+
+.ant-tabs-tab-active > .ant-tabs-tab-btn {
+    color: black !important;
+}
+
+.input-menu {
+    min-width: 50px !important;
+    max-width: 100px !important;
+    color: black !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #a1a1a1 !important;
+    max-height: 30px !important;
+
+}
+
+.input-menu:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.form-item-input {
+    min-width: 100px !important;
+    max-width: 500px !important;
+}
+
+.form-item-area {
+    max-width: 500px !important;
+}
+
+.item-card {
+    display: flex;
+    padding: 20px;
+    transition: all .2s ease-in-out;
+    overflow: hidden;
+}
+
+.custom-badge {
+    background: none;
+}
+
+.custom-badge > .ant-ribbon-corner {
+    color: white;
+    filter: none;
+}
+
+.item-tab > div .ant-tabs-ink-bar {
+    background: var(--primary-color) !important;
+}
+
+.create-item-button:active,
+.create-item-button:focus,
+.create-item-button:hover{
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+    color: black !important;
+}

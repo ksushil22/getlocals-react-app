@@ -1,0 +1,24 @@
+.navbar-item {
+    cursor: pointer;
+    height: 60px;
+    align-content: center;
+    padding: 10px;
+    transition: all ease-in-out 0.3s;
+}
+.navbar-item:hover {
+    background: white;
+    box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.drawer-nav-item{
+    transition: all ease-in-out 0.3s;
+}
+
+.drawer-nav-item:hover {
+    background: #d3d3d3;
+    color: white;
+}
+
+.nav-bar-drawer >div .ant-drawer-header {
+    border-bottom: none !important;
+}

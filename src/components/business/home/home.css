@@ -1,0 +1,109 @@
+.ant-dropdown-menu-item{
+    height: 50px !important
+}
+
+.about-us.ant-input-outlined {
+    border: 2px solid #b0b0b0;
+    transition: box-shadow 0.5s ease;
+    box-shadow: none;
+}
+
+.about-us.ant-input-outlined:hover,
+.about-us.ant-input-outlined:focus {
+    border: 2px solid #b0b0b0;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.about-us.ant-input-outlined:focus {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.about-us-form {
+    min-height: 365px;
+}
+
+.time-picker-timing.ant-picker-outlined:hover,
+.time-picker-timing.ant-picker-outlined:focus
+{
+    border: 1px solid black;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    outline: rgba(0, 0, 0, 0.3);
+}
+
+.time-picker-timing > .ant-picker-active-bar {
+    background: var(--primary-color) !important;
+}
+
+.time-picker-timing > .ant-picker-clear {
+    display: none;
+}
+
+.ant-picker-focused,
+.ant-picker-focused:focus-within{
+    border: 1px solid var(--primary-color) !important;
+    box-shadow: 0 0 5px ;
+}
+
+.time-switch.ant-switch-checked {
+    background: var(--primary-color) !important;
+}
+
+.time-picker-timing > div .ant-picker-ok > .ant-btn {
+    width: 5.2em;
+    border-radius: 5px;
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color)
+}
+
+.time-picker-timing > div .ant-picker-ok > .ant-btn:hover {
+    background: var(--primary-color);
+    filter: brightness(80%);
+}
+
+.time-picker-timing > div .ant-picker-time-panel-cell.ant-picker-time-panel-cell-selected {
+    border-radius: 2px !important;
+}
+
+.time-picker-timing > div .ant-picker-time-panel-cell.ant-picker-time-panel-cell-selected > .ant-picker-time-panel-cell-inner {
+    color: var(--primary-background) !important;
+    background: gray !important;
+}
+
+.timing-select > .ant-select-selector {
+    border: 1px solid var(--primary-color) !important;
+}
+/**/
+.timing-select > div .ant-select-item-option-selected > .ant-select-item-option-content {
+    background: transparent;
+    color: var(--primary-background);
+    font-weight: normal;
+}
+
+.timing-select > div .ant-select-item-option-selected {
+    background: gray !important;
+}
+
+.timing-select > div .ant-select-selection-item {
+    color: black !important;
+}
+
+.contact-input {
+    min-width: 350px !important;
+    max-width: 100px !important;
+    color: black !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #a1a1a1 !important;
+    max-height: 30px !important;
+
+}
+
+.contact-input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.contact-button {
+
+}

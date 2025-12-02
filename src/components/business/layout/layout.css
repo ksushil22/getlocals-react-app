@@ -1,0 +1,43 @@
+.ant-menu-item-selected {
+    background: none !important;
+}
+
+.ant-menu-item-selected:after {
+    color: #fff !important;
+}
+
+.ant-menu-item {
+    align-items: center !important;
+    color: #919191 !important;
+}
+
+.ant-menu-title-content {
+    color: #fff !important;
+}
+
+.ant-menu-submenu {
+    color: #919191 !important;
+}
+
+.ant-menu-sub {
+    background: #ffffff !important;
+}
+
+.ant-menu-vertical .ant-menu-title-content {
+    color: #000 !important;
+}
+
+.ant-menu-light.ant-menu-horizontal >.ant-menu-item-selected::after,
+.ant-menu-light.ant-menu-horizontal >.ant-menu-item-active::after,
+.ant-menu-light.ant-menu-horizontal >.ant-menu-submenu-open::after,
+.ant-menu-light.ant-menu-horizontal >.ant-menu-submenu-active::after
+{
+    border-bottom-color: white !important;
+    border-bottom-width: 2px !important;
+}
+
+.ant-menu-submenu-selected::after {
+    border-bottom-color: white !important;
+    border-bottom-width: 2px !important;
+}
+

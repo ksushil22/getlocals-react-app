@@ -1,0 +1,48 @@
+.employee-form-div {
+    width: 100%
+}
+
+.employee-form-div input,
+.employee-form-div .employee-select{
+    min-width: 250px !important;
+    max-width: 40% !important;
+    color: black !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #a1a1a1 !important;
+    max-height: 30px !important;
+}
+
+.employee-form-div input:focus,
+.employee-form-div >div .ant-select-selector,
+.employee-form-div >div .ant-select-selector:focus,
+.employee-form-div .employee-select:focus {
+    color: black !important;
+    box-shadow: none !important;
+}
+
+.employee-form-div >div .ant-select-selector {
+    border: none !important;
+}
+.employee-form-div .submit-button {
+    min-width: 150px !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bolder !important;
+    font-size: large !important;
+    height: auto;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.24),0 2px 5px 0 rgba(0,0,0,0.19);
+}
+
+.employee-form-div .submit-button:active,
+.employee-form-div .submit-button:focus,
+.employee-form-div .submit-button:hover{
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+    color: black !important;
+}
+
+.employee-form-div >div .ant-select-selection-item {
+    color: black !important;
+}

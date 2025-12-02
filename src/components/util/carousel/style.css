@@ -1,0 +1,101 @@
+.carousel-inner {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s ease-in-out;
+    will-change: transform;
+}
+
+.carousel-item {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-item img {
+    max-width: 100%;
+    min-height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+}
+
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    color: #808080;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 3;
+    padding: 10px;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+.indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 3;
+}
+
+.indicator {
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #6b6b6b;
+}
+
+.indicator.active {
+    background: grey;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .carousel {
+        height: calc(100vh - 75px); /* Adjust height for smaller screens */
+    }
+
+    button.prev, button.next {
+        font-size: 18px;
+        padding: 8px;
+    }
+
+    .indicator {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel {
+        height: calc(100vh - 75px); /* Further adjust height for smaller screens */
+    }
+
+    button.prev, button.next {
+        font-size: 16px;
+        padding: 6px;
+    }
+
+    .indicator {
+        width: 10px;
+        height: 10px;
+    }
+}

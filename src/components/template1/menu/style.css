@@ -1,0 +1,33 @@
+.expandable {
+    max-height: 0;
+    opacity: 0.5;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.5s ease-in
+}
+
+.expandable.expanded {
+    overflow-y: auto;
+    max-height: 80vh;
+    opacity: 1;
+}
+.quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.quantity-slide {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 0;           /* start hidden */
+    opacity: 0;
+    overflow: hidden;       /* ensures content doesn't overflow */
+    transition: max-width 0.5s ease, opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.quantity-slide.show {
+    max-width: 200px; /* adjust to the expected width */
+    opacity: 1;
+}
+
