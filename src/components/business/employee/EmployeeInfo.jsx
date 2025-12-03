@@ -17,7 +17,7 @@ import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import DeleteConfirmationModal from "../../util/modals/DeleteConfirmationModal";
 
-const BASE_URL = process.env.BASE_API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || '';
 
 function EmployeeCard({item, businessId, setupUpdateItem, setUpdateId, setModalVisible}) {
 

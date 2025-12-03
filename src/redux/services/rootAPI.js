@@ -5,7 +5,7 @@ import {message, notification} from "antd";
 
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: process.env.BASE_API_URL,
+    baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || '',
     credentials: 'include',
     prepareHeaders: (headers, {getState}) => {
         if (typeof window !== 'undefined') {

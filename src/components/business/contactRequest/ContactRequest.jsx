@@ -11,7 +11,7 @@ import ContactRequestModal from "./ContactRequestModal";
 import './contactRequest.css'
 
 
-const BASE_URL = process.env.BASE_API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || '';
 
 const ContactRequest = () => {
     const businessId = useSelector((state) => state.business.businessId);

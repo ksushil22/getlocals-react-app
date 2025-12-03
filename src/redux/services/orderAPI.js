@@ -1,7 +1,7 @@
 import {rootAPI} from "./rootAPI";
 import {BUSINESS_ORDER_API, PUBLIC_ORDER_API} from "../api_url";
 
-const BASE_URL = process.env.BASE_API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || '';
 export const orderAPI = rootAPI.injectEndpoints({
     endpoints: builder => ({
         placeOrder: builder.mutation({
