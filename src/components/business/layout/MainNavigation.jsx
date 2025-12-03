@@ -9,53 +9,54 @@ import {
     faHouseUser,
     faRightFromBracket, faUser
 } from "@fortawesome/free-solid-svg-icons";
-import {Link, useNavigate} from "react-router-dom";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
 import {useDispatch} from "react-redux";
 import {ActiveNavigationMenuContext} from "../../../context/ActiveNavigationProvider";
 import {logOut} from "../../../redux/slicers/authSlicer";
 
 export default function () {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const router = useRouter();
     const { updateActiveNavigationMenu, activeNavigationMenu } = useContext(ActiveNavigationMenuContext);
 
     const items = [
         {
-            label: (<Link to={"/business-admin/home/"}>Home</Link>),
+            label: (<Link href={"/business-admin/home/"}>Home</Link>),
             key: 'home',
             icon: <FontAwesomeIcon icon={faHouseUser}/>,
         },
         {
-            label: (<Link to={"/business-admin/orders/"}>Orders</Link>),
+            label: (<Link href={"/business-admin/orders/"}>Orders</Link>),
             key: 'order',
             icon: <FontAwesomeIcon icon={faCartShopping} />,
         },
         {
-            label: (<Link to={'/business-admin/menu-items/'}>Menu</Link>),
+            label: (<Link href={'/business-admin/menu-items/'}>Menu</Link>),
             key: 'menu',
             icon: <FontAwesomeIcon icon={faBookOpen}/>,
         },
         {
-            label: (<Link to={'/business-admin/reviews/'}>Reviews</Link>),
+            label: (<Link href={'/business-admin/reviews/'}>Reviews</Link>),
             key: 'reviews',
             icon: <FontAwesomeIcon icon={faCommentDots}/>
         },
         {
-            label: (<Link to={'/business-admin/contact-request/'}>Contact Requests</Link>),
+            label: (<Link href={'/business-admin/contact-request/'}>Contact Requests</Link>),
             key: 'contact_requests',
             icon: <FontAwesomeIcon icon={faFaceSmile}/>
         },
         {
-            label: (<Link to={"/business-admin/employee-info/"}>Employee Info</Link>),
+            label: (<Link href={"/business-admin/employee-info/"}>Employee Info</Link>),
             key: 'employee-info',
             icon: <FontAwesomeIcon icon={faUser}/>
         },
         {
             label: (
-                <Link to={'/authenticate'}
+                <Link href={'/authenticate'}
                       onClick={() => {
                           dispatch(logOut())
-                          navigate('/authenticate/')
+                          router.push('/authenticate/')
                       }}
                 >Logout</Link>
             ),
@@ -75,7 +76,7 @@ export default function () {
                     padding: 10,
                     cursor: 'pointer'
                 }}
-                onClick={() => navigate('/business-admin/home')}
+                onClick={() => router.push('/business-admin/home')}
                 preview={false}
                 src={require('../../../assets/img/GetLocals-logos/GetLocals-logos_transparent.png')}/>
             <Menu

@@ -14,7 +14,7 @@ import {EmptyCart} from "./EmptyCartGIF";
 import {DollarOutlined, ShoppingCartOutlined, UserOutlined} from "@ant-design/icons";
 import GetAnimation from "../../../util/GetAnimation";
 import {usePlaceOrderMutation} from "../../../../redux/services/orderAPI";
-import {useNavigate} from "react-router-dom";
+import {useRouter} from "next/navigation";
 
 const UserInfoForm = ({form, loading, onFinish}) => {
     const rules = [{required: true, message: ''}];
@@ -55,7 +55,7 @@ const CartList = memo(({cart, businessId}) => {
     const [platformFee, setPlatformFee] = useState(0);
     const [form] = Form.useForm();
     const [placeOrder, {isLoading: placingOrder}] = usePlaceOrderMutation()
-    const navigate = useNavigate();
+    const router = useRouter();
 
     useEffect(() => {
         let sum = 0;
@@ -92,7 +92,7 @@ const CartList = memo(({cart, businessId}) => {
             }).then(({data, error}) => {
                 if (data) {
                     console.log(data);
-                    navigate(`/order-status/${data.orderNumber}/`)
+                    router.push(`/order-status/${data.orderNumber}/`)
                 } else if (error) {
                     console.log(error);
                 }

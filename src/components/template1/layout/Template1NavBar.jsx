@@ -6,22 +6,23 @@ import {COLORS, StyledDiv} from "../constants";
 import {useSelector} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faBookOpen, faCommentDots, faHouseUser, faStar, faXmark} from "@fortawesome/free-solid-svg-icons";
-import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
+import Link from "next/link";
+import {usePathname, useRouter} from "next/navigation";
 import "./style.css"
 import {scrollToSection} from "../../util/Commons";
 import {useGetBusinessLogoQuery} from "../../../redux/services/businessAPI";
 import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 const TEMPLATE_ID = templateIds.Template1;
 
-export const items = (lastSegment, navigate) =>  [
+export const items = (lastSegment, router) =>  [
     {
-        label: (<Link to={`/${TEMPLATE_ID}/home/`} style={{color: COLORS.PRIMARY_COLOR}}>Home</Link>),
+        label: (<Link href={`/${TEMPLATE_ID}/home/`} style={{color: COLORS.PRIMARY_COLOR}}>Home</Link>),
         key: 'home',
         icon: <FontAwesomeIcon icon={faHouseUser}/>,
         link: `/${TEMPLATE_ID}/home/`
     },
     {
-        label: (<Link to={`/${TEMPLATE_ID}/menu`} style={{color: COLORS.PRIMARY_COLOR}}>Menu</Link>),
+        label: (<Link href={`/${TEMPLATE_ID}/menu`} style={{color: COLORS.PRIMARY_COLOR}}>Menu</Link>),
         key: 'menu',
         icon: <FontAwesomeIcon icon={faBookOpen}/>,
         link: `/${TEMPLATE_ID}/menu/`
@@ -34,7 +35,7 @@ export const items = (lastSegment, navigate) =>  [
             if (lastSegment === 'home') {
                 scrollToSection('review')
             } else {
-                navigate(`/${TEMPLATE_ID}/home/`, { state: { scrollTo: 'review' } });
+                router.push(`/${TEMPLATE_ID}/home/?scrollTo=review`);
             }
         }
     },
@@ -46,19 +47,20 @@ export const items = (lastSegment, navigate) =>  [
             if (lastSegment === 'home') {
                 scrollToSection('about-us')
             } else {
-                navigate(`/${TEMPLATE_ID}/home/`, { state: { scrollTo: 'about-us' } });
+                router.push(`/${TEMPLATE_ID}/home/?scrollTo=about-us`);
             }
         }
     }
 ];
 const Template1NavBar = () => {
     const screens = useBreakpoint();
-    const location = useLocation()
+    const pathname = usePathname();
+    const router = useRouter();
     const businessId = useSelector((state) => state.templateBusiness.businessId);
     const marginLeftLogo = screens.lg || screens.xl || screens.xxl ? 50 : 20;
     const {data: logo, isLoading: loadingLogo} = useGetBusinessLogoQuery({businessId})
 
-    const pathSegments = location.pathname.split('/').filter(segment => segment)
+    const pathSegments = pathname.split('/').filter(segment => segment)
     const lastSegment = pathSegments[pathSegments.length-1];
 
     const Logo = () => (
@@ -72,12 +74,11 @@ const Template1NavBar = () => {
                     cursor: 'pointer'
                 }}
                 loading={"lazy"}
-                onClick={() => navigate(`/${TEMPLATE_ID}/home/`)}
+                onClick={() => router.push(`/${TEMPLATE_ID}/home/`)}
                 src={logo?.url}
                 alt={businessId}
             />)
 
-    const navigate = useNavigate()
 
 
     const DrawerNavBar = () => {
@@ -109,7 +110,7 @@ const Template1NavBar = () => {
                 }}
             >
                 <List
-                    dataSource={items(lastSegment, navigate)}
+                    dataSource={items(lastSegment, router)}
                     size={"large"}
                     renderItem={(item) => (
                         <List.Item
@@ -118,7 +119,7 @@ const Template1NavBar = () => {
                                 if (item.callback) {
                                     item.callback()
                                 } else {
-                                    navigate(item.link)
+                                    router.push(item.link)
                                 }
                                 setOpen(false)
                             }}

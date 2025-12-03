@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import GetLoader, { DISPLAY, SPINNERS } from "../components/util/customSpinner/GetLoader";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useParams, useRouter, usePathname} from "next/navigation";
 import { useGetTemplateInformationQuery } from "../redux/services/businessAPI";
 import { useDispatch } from "react-redux";
 import {setCurrentTemplateBusiness} from "../redux/slicers/templateBusinessSlicer";
 
 const BusinessNavigator = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { businessUsername } = useParams();
+    const router = useRouter();
+    const pathname = usePathname();
+    const params = useParams();
+    const businessUsername = params?.slug || params?.businessUsername;
     const { data: templateInformation, error, isLoading } = useGetTemplateInformationQuery({ businessUsername });
 
 
@@ -17,17 +18,18 @@ const BusinessNavigator = () => {
         if (!isLoading) {
             if (error) {
                 // Handle the error, e.g., navigate to an error page or show a message
-                navigate('/error');
+                router.push('/error');
             } else if (templateInformation) {
                 dispatch(setCurrentTemplateBusiness({ id: templateInformation?.id }));
-                if (location.hash) {
-                    navigate(`/${templateInformation.templateId}/home/`, { state: { scrollTo: location.hash.slice(1) } });
+                const hash = typeof window !== 'undefined' ? window.location.hash : '';
+                if (hash) {
+                    router.push(`/${templateInformation.templateId}/home/?scrollTo=${hash.slice(1)}`);
                 } else {
-                    navigate(`/${templateInformation.templateId}/home/`);
+                    router.push(`/${templateInformation.templateId}/home/`);
                 }
             }
         }
-    }, [isLoading, templateInformation, error, dispatch, navigate]);
+    }, [isLoading, templateInformation, error, dispatch, router]);
 
     if (isLoading) {
         return <GetLoader display={DISPLAY.FULLSCREEN} spinner={SPINNERS.ROTATING_DOT_SPINNER} />;

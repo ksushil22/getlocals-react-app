@@ -3,13 +3,13 @@ import {Col, Divider, Modal, Row} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import ModalPopup from "../util/modals/ModalPopup";
-import {useNavigate} from "react-router-dom";
+import {useRouter} from "next/navigation";
 import {useDispatch} from "react-redux";
 import {logOut} from "../../redux/slicers/authSlicer";
 
 
 export default function ({isVisible}) {
-    const navigate = useNavigate();
+    const router = useRouter();
     const dispatch = useDispatch();
 
 
@@ -20,7 +20,7 @@ export default function ({isVisible}) {
         showCancel={false}
         handleCancel={() => {
             dispatch(logOut())
-            navigate('/authenticate')
+            router.push('/authenticate')
         }}
         disableScreenTouch={false}
     >

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Layout} from "antd";
 import Template1NavBar from "./Template1NavBar";
-import {Outlet} from "react-router-dom";
 import BusinessContactInformation from "./BusinessContactInformation";
 import {StyledContent, StyledFooter} from "../constants";
 import Template1Footer from "./Template1Footer";
@@ -40,7 +39,7 @@ const Template1Layout = () => {
             <BusinessContactInformation/>
             <Template1NavBar/>
             <StyledContent>
-                <Outlet/>
+                {/* Content rendered by Next.js layout */}
             </StyledContent>
             <StyledFooter>
                 <Template1Footer />

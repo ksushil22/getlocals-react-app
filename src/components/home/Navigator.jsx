@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {NavigatorDiv} from "./StyledComponents";
 import {Button} from "antd";
-import {useNavigate} from "react-router-dom";
+import {useRouter} from "next/navigation";
 
 
 const Navigator = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
     const [lastScrollY, setLastScrollY] = useState(0);
     const [offset, setOffset] = useState(0);
 
@@ -46,7 +46,7 @@ const Navigator = () => {
                     height: 50,
                     fontFamily: 'Oswald'
                 }}
-                type={"text"} onClick={() => navigate("/authenticate/registration/")}>Get Started</Button>
+                type={"text"} onClick={() => router.push("/authenticate/registration/")}>Get Started</Button>
         </div>
     </NavigatorDiv>
 }

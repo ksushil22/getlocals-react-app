@@ -4,12 +4,13 @@ import {CenteredHalfDiv, MarketingInformationDiv} from "./StyledComponents";
 import "./style.css"
 import InformationDiv from "./MarketingHeadingDiv";
 import ServicesTabs from "./ServicesTabs";
-import {Link, useNavigate} from "react-router-dom";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
 import TakeYourBusiness from "./TakeYourBusiness";
 import Footer from "./Footer";
 
 const GetLocalsHome = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
     return <div style={{
         background: 'white',
         fontFamily: 'Oswald'
@@ -29,7 +30,7 @@ const GetLocalsHome = () => {
                 Creating your Business' Website, Ads, Marketing and
                 more. <span style={{
                     background: 'var(--primary-color)',
-                }}><Link to={"/authenticate/registration/"} style={{
+                }}><Link href={"/authenticate/registration/"} style={{
                     textDecoration: 'none',
                     color: 'var(--primary-background)'
                 }}> Click here</Link></span> to get started. <br/>
@@ -48,7 +49,7 @@ const GetLocalsHome = () => {
                 fontSize: 'larger',
                 padding: 20
             }}
-            onClick={()=> navigate('/authenticate/registration/')}
+            onClick={()=> router.push('/authenticate/registration/')}
         >Lets get you digitalized...
         </CenteredHalfDiv>
 

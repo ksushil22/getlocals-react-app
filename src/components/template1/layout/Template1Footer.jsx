@@ -2,7 +2,8 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import {useGetFooterContentQuery} from "../../../redux/services/businessAPI";
 import styled from "styled-components";
-import {useLocation, useNavigate} from "react-router-dom";
+import {usePathname} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {COLORS} from "../constants";
 import {items} from "./Template1NavBar";
 import {IconLink} from "../Util";
@@ -75,9 +76,9 @@ const Template1Footer = () => {
         data: footerContent,
         isLoading: loadingFooterContent
     } = useGetFooterContentQuery({businessId: businessId})
-    const location = useLocation();
-    const navigate = useNavigate();
-    const pathSegments = location.pathname.split('/').filter(segment => segment)
+    const pathname = usePathname();
+    const router = useRouter();
+    const pathSegments = pathname.split('/').filter(segment => segment)
     const lastSegment = pathSegments[pathSegments.length-1];
 
     return(
@@ -94,12 +95,12 @@ const Template1Footer = () => {
                     <span>Sunday: <span>{footerContent?.timings?.sunday}</span></span>
                 </StyledTimingContainer>
                 <StyledNavMenuContainer>
-                    {items(lastSegment, navigate)?.map((item) => {
+                    {items(lastSegment, router)?.map((item) => {
                         return (<FooterHeading
                             style={{
                                 cursor: 'pointer'
                             }}
-                            onClick={() => item.callback? item.callback() : navigate(item.link)}
+                            onClick={() => item.callback? item.callback() : router.push(item.link)}
                             key={item.key}>
                             {item.label}
                         </FooterHeading>)

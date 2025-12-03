@@ -3,7 +3,7 @@ import {Button, Col, Form, Image, Input, Row} from "antd";
 import {useLoginMutation} from "../../redux/services/authAPI";
 import {setCredentials} from "../../redux/slicers/authSlicer";
 import {useDispatch} from "react-redux";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useRouter, useSearchParams} from "next/navigation";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import "./authentication.css";
 import {faArrowRightToBracket} from "@fortawesome/free-solid-svg-icons";
@@ -13,9 +13,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 export default function () {
     const [loginMutation, {isLoading: isLoggingInUser}] = useLoginMutation();
     const dispatch = useDispatch();
-    const location = useLocation();
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [form] = Form.useForm();
-    const navigate = useNavigate();
     const screens = useBreakpoint();
 
     const innerDivHeight = screens.md || screens.lg || screens.xl || screens.xxl ? '100vh' : '100%';
@@ -26,8 +26,8 @@ export default function () {
                 if (data) {
                     dispatch(setCredentials({...data, username: form.getFieldValue("email")}));
 
-                    const {from} = location.state || {from: {pathname: "/business-admin/home"}};
-                    navigate(from);
+                    const from = searchParams.get('from') || "/business-admin/home";
+                    router.push(from);
                 }
             })
 
@@ -129,7 +129,7 @@ export default function () {
                         marginTop: '20px',
                         textShadow: '0 1px 3px'
                     }}
-                    onClick={() => navigate('/authenticate/registration')}>
+                    onClick={() => router.push('/authenticate/registration')}>
                     Register
                 </Button>
 

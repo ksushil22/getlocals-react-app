@@ -7,13 +7,13 @@ import {COLORS, StyledDiv} from "./constants";
 import AboutUsTemplate1 from "./AboutUsTemplate1";
 import TeamTemplate1 from "./TeamTemplate1";
 import ReviewTemplate1 from "./ReviewTemplate1";
-import {useLocation} from "react-router-dom";
+import {useSearchParams} from "next/navigation";
 import {scrollToSection} from "../util/Commons";
 
 const Template1Home = ({
                            businessId
                        }) => {
-    const location = useLocation()
+    const searchParams = useSearchParams();
     const [images, setImages] = useState([]);
     const {data: carouselImages, isLoading: loadingCarouselImages} = useGetBusinessImagesQuery({
         'businessId': businessId, 'type': 'CAROUSEL'
@@ -26,11 +26,10 @@ const Template1Home = ({
     } = useGetPublicBusinessInfoQuery({businessId: businessId}, {skip: businessId === null});
 
     useEffect(() => {
-
-        if (location.state && location.state.scrollTo) {
+        const scrollTo = searchParams.get('scrollTo');
+        if (scrollTo) {
             const timer = setTimeout(() => {
-                location.state.scrollTo
-                scrollToSection(location.state.scrollTo)
+                scrollToSection(scrollTo)
             }, 2000);
             return () => clearTimeout(timer);
         } else {
@@ -39,7 +38,7 @@ const Template1Home = ({
                 behavior: 'smooth'
             });
         }
-    }, []);
+    }, [searchParams]);
     useEffect(() => {
         if (businessId) {
             refetchBusinessInfo()

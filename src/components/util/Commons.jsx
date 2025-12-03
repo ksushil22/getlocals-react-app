@@ -1,5 +1,5 @@
 import {PUBLIC_BUSINESS_API} from "../../redux/api_url";
-import {useLocation} from "react-router-dom";
+// useLocation removed - use usePathname from next/navigation if needed
 import { getImageUrl as getImageUrlFromUtils } from "../../utils/imageUtils";
 
 export const MainHeadingStyle= {

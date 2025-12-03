@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Form, Input} from "antd";
 import {useRegisterMutation} from "../../redux/services/authAPI";
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useRouter} from "next/navigation";
 import "./authentication.css";
 import {setCredentials} from "../../redux/slicers/authSlicer";
 import {REGISTER_BUSINESS} from "../util/Constants";
@@ -12,7 +12,7 @@ export default function ({
                          }) {
     const [form] = Form.useForm()
     const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const router = useRouter()
     const rules = [{
         required: true,
         message: 'The field is required.'
@@ -168,7 +168,7 @@ export default function ({
                             placeholder={'Confirm Password'} />
                     </div>
                 </Form.Item>
-                <p style={{cursor: 'pointer', color: '#ece7e2'}} onClick={()=> navigate('/authenticate')}>Already registered? Click here to LogIn</p>
+                <p style={{cursor: 'pointer', color: '#ece7e2'}} onClick={()=> router.push('/authenticate')}>Already registered? Click here to LogIn</p>
                 <Form.Item>
                     <Button
                         style={{
