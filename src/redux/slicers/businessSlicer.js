@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    businessId: sessionStorage.getItem("businessId") || null
+    businessId: null
 };
 
 const businessSlice = createSlice({
@@ -10,13 +10,15 @@ const businessSlice = createSlice({
     reducers: {
         setCurrentBusiness: (state, action) => {
             state.businessId = action.payload.id;
-
-            sessionStorage.setItem("businessId", action.payload.id);
+            if (typeof window !== 'undefined') {
+                sessionStorage.setItem("businessId", action.payload.id);
+            }
         },
         removeBusiness: (state) => {
             state.businessId = null;
-
-            sessionStorage.removeItem("businessId");
+            if (typeof window !== 'undefined') {
+                sessionStorage.removeItem("businessId");
+            }
         },
     },
 });

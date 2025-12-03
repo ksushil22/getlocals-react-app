@@ -8,12 +8,13 @@ import {logOut} from "../../redux/slicers/authSlicer";
 export default function () {
     const dispatch = useDispatch();
 
-    if (sessionStorage.getItem('access')) {
+    const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('access') : null;
+    if (accessToken) {
         const {
             data: isValidToken,
             isLoading,
             error
-        } = useValidateTokenQuery(sessionStorage.getItem('access'));
+        } = useValidateTokenQuery(accessToken);
         if (isLoading) {
             return <GetLoader />;
         }else if (error) {

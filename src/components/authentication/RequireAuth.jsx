@@ -7,7 +7,7 @@ import GetLoader from "../util/customSpinner/GetLoader";
 
 const RequireAuth = () => {
     //check if we have a token
-    const token = sessionStorage?.getItem("access");
+    const token = typeof window !== 'undefined' ? sessionStorage.getItem("access") : null;
     const location = useLocation();
 
     // useEffect hook to listen to the history and scroll the user to the top of the page when they change components
@@ -19,7 +19,7 @@ const RequireAuth = () => {
             data: isValidToken,
             isLoading,
             error
-        } = useValidateTokenQuery(sessionStorage.getItem('access'));
+        } = useValidateTokenQuery(token);
         if (isLoading) {
             return <GetLoader/>;
         } else if (error) {

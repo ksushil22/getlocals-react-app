@@ -7,17 +7,20 @@ const authSlice = createSlice({
     reducers: {
         setCredentials: (state, action) => {
             const { username, name, access, refresh } = action.payload;
-
-            sessionStorage.setItem("username", username);
-            sessionStorage.setItem("name", name);
-            sessionStorage.setItem("access", access);
-            sessionStorage.setItem("refresh", refresh);
+            if (typeof window !== 'undefined') {
+                sessionStorage.setItem("username", username);
+                sessionStorage.setItem("name", name);
+                sessionStorage.setItem("access", access);
+                sessionStorage.setItem("refresh", refresh);
+            }
         },
         logOut: (state, action) => {
-            sessionStorage.removeItem("username");
-            sessionStorage.removeItem("name");
-            sessionStorage.removeItem("access");
-            sessionStorage.removeItem("refresh");
+            if (typeof window !== 'undefined') {
+                sessionStorage.removeItem("username");
+                sessionStorage.removeItem("name");
+                sessionStorage.removeItem("access");
+                sessionStorage.removeItem("refresh");
+            }
         },
     },
 });
@@ -26,4 +29,9 @@ export const { setCredentials, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectUser = (state) => sessionStorage.getItem("username");
+export const selectUser = (state) => {
+    if (typeof window !== 'undefined') {
+        return sessionStorage.getItem("username");
+    }
+    return null;
+};

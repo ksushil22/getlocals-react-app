@@ -193,7 +193,7 @@ export default function ({
             <Upload
                 action={`${process.env.BASE_API_URL}business/${businessId}/upload/${type}/`}
                 headers={{
-                    'Authorization': `Bearer ${sessionStorage.getItem("access")}`
+                    'Authorization': `Bearer ${typeof window !== 'undefined' ? sessionStorage.getItem("access") || '' : ''}`
                 }}
                 data={{
                     generateThumbnail: shouldGenerateThumbnailForType ? 'true' : 'false'

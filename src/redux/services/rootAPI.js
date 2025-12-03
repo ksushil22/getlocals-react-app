@@ -8,12 +8,13 @@ const baseQuery = fetchBaseQuery({
     baseUrl: process.env.BASE_API_URL,
     credentials: 'include',
     prepareHeaders: (headers, {getState}) => {
-
-        const access = sessionStorage.getItem("access")
-        if(access) {
-            headers.set("Authorization", `Bearer ${access}`);
+        if (typeof window !== 'undefined') {
+            const access = sessionStorage.getItem("access");
+            if(access) {
+                headers.set("Authorization", `Bearer ${access}`);
+            }
         }
-        headers.set("Access-Control-Allow-Origin", 'true')
+        headers.set("Access-Control-Allow-Origin", 'true');
 
         return headers
     },
@@ -31,15 +32,18 @@ const baseQueryWithReauth = async(args, api, extraOption, overrideRoute) => {
             type: "success"
         })
     }else if(result?.error?.status === 401) {
-        sessionStorage.setItem("access", "")
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem("access", "");
+        }
 
         // send refresh token to get new access token
+        const refreshToken = typeof window !== 'undefined' ? sessionStorage.getItem("refresh") : null;
         const refreshResult = await baseQuery(
             {
                 url: REFRESH_TOKEN_API,
                 method: 'POST',
                 body: {
-                    refreshToken: sessionStorage.getItem("refresh"),
+                    refreshToken: refreshToken,
                 },
             },
             api,
@@ -48,10 +52,11 @@ const baseQueryWithReauth = async(args, api, extraOption, overrideRoute) => {
 
 
         if(refreshResult?.data) {
-            const user = api.getState().auth.username
+            const user = api.getState().auth.username;
+            const currentRefresh = typeof window !== 'undefined' ? sessionStorage.getItem("refresh") : null;
 
             //  store the new token
-            refreshResult.data['refresh'] = sessionStorage.getItem("refresh")
+            refreshResult.data['refresh'] = currentRefresh;
 
             api.dispatch(setCredentials({...refreshResult.data, user}))
 

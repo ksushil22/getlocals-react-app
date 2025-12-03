@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    businessId: localStorage.getItem("businessId") || null
+    businessId: null
 };
 
 const templateBusiness = createSlice({
@@ -10,13 +10,15 @@ const templateBusiness = createSlice({
     reducers: {
         setCurrentTemplateBusiness: (state, action) => {
             state.businessId = action.payload.id;
-
-            localStorage.setItem("businessId", action.payload.id);
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("businessId", action.payload.id);
+            }
         },
         removeBusiness: (state) => {
             state.businessId = null;
-
-            localStorage.removeItem("businessId");
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem("businessId");
+            }
         },
     },
 });

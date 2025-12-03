@@ -1,11 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import RegisterUser from '../../../../src/components/authentication/RegisterUser.jsx';
-import RegisterBusiness from '../../../../src/components/authentication/RegisterBusiness.jsx';
+import dynamicImport from 'next/dynamic';
 import { Col, Image, Row } from 'antd';
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint';
 import { REGISTER_USER } from '../../../../src/components/util/Constants.jsx';
+
+const RegisterUser = dynamicImport(() => import('../../../../src/components/authentication/RegisterUser.jsx'), {
+    ssr: false
+});
+
+const RegisterBusiness = dynamicImport(() => import('../../../../src/components/authentication/RegisterBusiness.jsx'), {
+    ssr: false
+});
+
+export const dynamic = 'force-dynamic';
 
 export default function RegistrationPage() {
     const [currentState, setCurrentState] = useState(REGISTER_USER);
