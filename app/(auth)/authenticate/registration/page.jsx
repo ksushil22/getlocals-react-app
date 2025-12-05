@@ -4,13 +4,13 @@ import { useState } from 'react';
 import dynamicImport from 'next/dynamic';
 import { Col, Image, Row } from 'antd';
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint';
-import { REGISTER_USER } from '../../../../src/components/util/Constants.jsx';
+import { REGISTER_USER } from '@/lib/constants/componentConstants.jsx';
 
-const RegisterUser = dynamicImport(() => import('../../../../src/components/authentication/RegisterUser.jsx'), {
+const RegisterUser = dynamicImport(() => import('@/components/authentication/RegisterUser.jsx'), {
     ssr: false
 });
 
-const RegisterBusiness = dynamicImport(() => import('../../../../src/components/authentication/RegisterBusiness.jsx'), {
+const RegisterBusiness = dynamicImport(() => import('@/components/authentication/RegisterBusiness.jsx'), {
     ssr: false
 });
 

@@ -3,11 +3,11 @@
 import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import GetLoader, { DISPLAY, SPINNERS } from '../../../src/components/util/customSpinner/GetLoader';
-import { useGetTemplateInformationQuery } from '../../../lib/redux/services/businessAPI';
-import { setCurrentTemplateBusiness } from '../../../lib/redux/slicers/templateBusinessSlicer';
-import Template1Home from '../../../src/components/template1/Template1Home';
-import Template1Menu from '../../../src/components/template1/menu/Template1Menu';
+import GetLoader, { DISPLAY, SPINNERS } from '@/components/util/customSpinner/GetLoader';
+import { useGetTemplateInformationQuery } from '@/lib/redux/services/businessAPI';
+import { setCurrentTemplateBusiness } from '@/lib/redux/slicers/templateBusinessSlicer';
+import Template1Home from '@/components/template1/Template1Home';
+import Template1Menu from '@/components/template1/menu/Template1Menu';
 import { useSelector } from 'react-redux';
 
 // UUID pattern check (template IDs are UUIDs)

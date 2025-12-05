@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Layout } from 'antd';
-import Template1NavBar from '../../src/components/template1/layout/Template1NavBar';
-import BusinessContactInformation from '../../src/components/template1/layout/BusinessContactInformation';
-import { StyledContent, StyledFooter } from '../../src/components/template1/constants.js';
-import Template1Footer from '../../src/components/template1/layout/Template1Footer';
+import Template1NavBar from '@/components/template1/layout/Template1NavBar';
+import BusinessContactInformation from '@/components/template1/layout/BusinessContactInformation';
+import { StyledContent, StyledFooter } from '@/components/template1/constants.js';
+import Template1Footer from '@/components/template1/layout/Template1Footer';
 
 // UUID pattern check (template IDs are UUIDs)
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

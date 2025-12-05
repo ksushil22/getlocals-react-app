@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useValidateTokenQuery } from '../../lib/redux/services/authAPI.js';
-import GetLoader from '../../src/components/util/customSpinner/GetLoader.jsx';
+import GetLoader from '@/components/util/customSpinner/GetLoader.jsx';
 
 export default function ProtectedLayout({ children }) {
     const router = useRouter();

@@ -2,7 +2,7 @@
 
 import dynamicImport from 'next/dynamic';
 
-const Login = dynamicImport(() => import('../../../src/components/authentication/Login'), {
+const Login = dynamicImport(() => import('@/components/authentication/Login'), {
     ssr: false
 });
 

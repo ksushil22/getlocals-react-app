@@ -2,7 +2,7 @@
 
 import dynamicImport from 'next/dynamic';
 
-const GetLocalsHomeView = dynamicImport(() => import('../src/components/home/GetLocalsHome'), {
+const GetLocalsHomeView = dynamicImport(() => import('@/components/home/GetLocalsHome'), {
     ssr: false
 });
 

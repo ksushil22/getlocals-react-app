@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ConfigProvider } from "antd";
-import { ActiveNavigationMenuProvider } from "../../src/context/ActiveNavigationProvider";
+import { ActiveNavigationMenuProvider } from "@/lib/context/ActiveNavigationProvider";
 import ReduxProvider from './ReduxProvider';
 import 'animate.css/animate.compat.css';
 import 'animate.css';

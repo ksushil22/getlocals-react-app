@@ -18,8 +18,8 @@ const nextConfig = {
     // Add path aliases for easier imports
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': path.resolve(__dirname, 'src'),
-      '@components': path.resolve(__dirname, 'src/components'),
+      '@': path.resolve(__dirname),
+      '@components': path.resolve(__dirname, 'components'),
       '@lib': path.resolve(__dirname, 'lib'),
     };
     
