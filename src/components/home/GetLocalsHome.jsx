@@ -19,7 +19,7 @@ const GetLocalsHome = () => {
         <MarketingInformationDiv>
             <InformationDiv/>
             <div className={"animate__animated animate__zoomIn"}>
-                <img src={require('../../assets/img/business-marketing.png')} alt={"Business Image"} style={{
+                <img src={'/img/business-marketing.png'} alt={"Business Image"} style={{
                     maxWidth: '60vw',
                     height: 'auto'
                 }}/>

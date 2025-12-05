@@ -4,16 +4,16 @@ import GetCarousel from "../util/carousel/GetCarousel";
 
 const visualDivImages = [
 	{
-		'url': `${require('../../assets/img/review.png')}`
+		'url': `/img/review.png`
 	},
 	{
-		'url': `${require('../../assets/img/menu.png')}`
+		'url': `/img/menu.png`
 	},
 	{
-		'url': `${require('../../assets/img/Employee Management.jpg')}`
+		'url': `/img/Employee Management.jpg`
 	},
 	{
-		'url': `${require('../../assets/img/SEO.png')}`
+		'url': `img/SEO.png`
 	}
 ]
 

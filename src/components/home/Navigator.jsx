@@ -33,7 +33,7 @@ const Navigator = () => {
         <img style={{
             marginLeft: 10
         }} height={48}
-             src={require('../../assets/img/GetLocals-logos/GetLocals-logos_transparent.png')} alt={'logo'}/>
+             src={'img/GetLocals-logos/GetLocals-logos_transparent.png'} alt={'logo'}/>
         <div style={{
             flex: 1,
             display: "flex",

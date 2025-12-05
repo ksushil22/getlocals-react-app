@@ -32,7 +32,7 @@ export default function RegistrationPage() {
                         padding: '20px'
                     }}
                     preview={false}
-                    src={require('../../../../src/assets/img/GetLocals-logos/GetLocals-logos_transparent_inverse.png')}
+                    src={'/img/GetLocals-logos/GetLocals-logos_transparent_inverse.png'}
                 />
             </Col>
             <Col xl={16} lg={16} md={16} sm={24} xs={24}

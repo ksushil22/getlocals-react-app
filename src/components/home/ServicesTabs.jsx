@@ -7,7 +7,7 @@ const services = [
     {
         'id': 1,
         'name': 'Marketing',
-        'path': require('../../assets/img/Marketing.jpg'),
+        'path': '/img/Marketing.jpg',
         'description': 'Market your business to relevant customers for better growth.',
         'background-color': 'white',
         'color': '#333'
@@ -15,7 +15,7 @@ const services = [
     {
         'id': 2,
         'name': 'Website Builder',
-        'path': require('../../assets/img/website generator.png'),
+        'path': '/img/website generator.png',
         'description': 'Just fill out a few forms and the website will be ready with your favorite template.',
         'background-color': '#FCEBD7',
         'color': "#333"
@@ -23,7 +23,7 @@ const services = [
     {
         'id': 3,
         'name': 'Advertisement',
-        'path': require('../../assets/img/ads.jpg'),
+        'path': '/img/ads.jpg',
         'description': 'Advertise your business on social media sites like Instagram, Facebook, etc.',
         'background-color': '#4F9A9D',
         'color': '#333'
@@ -31,7 +31,7 @@ const services = [
     {
         'id': 4,
         'name': 'Search Engine Optimization',
-        'path': require('../../assets/img/SEO.png'),
+        'path': '/img/SEO.png',
         'description': 'Attract relevant traffic to your website and increase your online visibility',
         'background-color': '#E8E8E8',
         'color': '#333'
@@ -39,7 +39,7 @@ const services = [
     {
         'id': 5,
         'name': 'Social Media Marketing',
-        'path': require('../../assets/img/SMM.png'),
+        'path': '/img/SMM.png',
         'description': 'Market your business on Social Media Platforms and achieve your branding goals.',
         'background-color': '#E1E0E3',
         'color': '#333'

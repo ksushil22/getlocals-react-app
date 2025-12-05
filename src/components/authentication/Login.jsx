@@ -57,7 +57,7 @@ export default function () {
                         padding: '20px',
                         width: 'auto',
                     }}
-                    preview={false} src={require('../../assets/img/GetLocals-logos/GetLocals-logos_transparent.png')}/>
+                    preview={false} src={'/img/GetLocals-logos/GetLocals-logos_transparent.png'}/>
                 <h1 style={{
                     fontWeight: '900',
                     fontSize: '50px',

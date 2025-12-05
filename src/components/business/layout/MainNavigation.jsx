@@ -78,7 +78,7 @@ export default function () {
                 }}
                 onClick={() => router.push('/business-admin/home')}
                 preview={false}
-                src={require('../../../assets/img/GetLocals-logos/GetLocals-logos_transparent.png')}/>
+                src={'img/GetLocals-logos/GetLocals-logos_transparent.png'}/>
             <Menu
                 selectedKeys={[activeNavigationMenu]}
                 theme={'light'}
