@@ -33,7 +33,7 @@ export default function Home() {
                         uid: businessId,
                         name: businessData.name,
                         status: 'done',
-                        url: `${process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || ''}${PUBLIC_BUSINESS_API}${businessId}/image/${businessData.logo}/`
+                        url: `${process.env.BASE_API_URL || ''}${PUBLIC_BUSINESS_API}${businessId}/image/${businessData.logo}/`
                     }
                 ])
             }

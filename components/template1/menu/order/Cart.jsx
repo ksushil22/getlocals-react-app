@@ -14,7 +14,7 @@ import {EmptyCart} from "./EmptyCartGIF";
 import {DollarOutlined, ShoppingCartOutlined, UserOutlined} from "@ant-design/icons";
 import GetAnimation from "../../../util/GetAnimation";
 import {usePlaceOrderMutation} from "@/lib/redux/services/orderAPI";
-import {useRouter} from "next/navigation";
+import {useRouter, useParams} from "next/navigation";
 
 const UserInfoForm = ({form, loading, onFinish}) => {
     const rules = [{required: true, message: ''}];
@@ -56,6 +56,8 @@ const CartList = memo(({cart, businessId}) => {
     const [form] = Form.useForm();
     const [placeOrder, {isLoading: placingOrder}] = usePlaceOrderMutation()
     const router = useRouter();
+    const params = useParams();
+    const slug = params.slug;
 
     useEffect(() => {
         let sum = 0;
@@ -92,7 +94,8 @@ const CartList = memo(({cart, businessId}) => {
             }).then(({data, error}) => {
                 if (data) {
                     console.log(data);
-                    router.push(`/order-status/${data.orderNumber}/`)
+                    // Redirect to order-status within the same slug path
+                    router.push(`/order-status/${data.orderNumber}`);
                 } else if (error) {
                     console.log(error);
                 }

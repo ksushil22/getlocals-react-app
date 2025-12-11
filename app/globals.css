@@ -5,20 +5,6 @@
     font-style: normal;
 }
 
-@font-face {
-    font-family: 'Indie Flower';
-    src: url('/fonts/IndieFlower-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Oswald';
-    src: url('/fonts/Oswald-VariableFont_wght.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-
 :root {
     --primary-color: #614044;
     --primary-background: #dedede;

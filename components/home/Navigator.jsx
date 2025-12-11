@@ -44,7 +44,7 @@ const Navigator = () => {
                 style={{
                     color: 'var(--primary-background)',
                     height: 50,
-                    fontFamily: 'Oswald'
+                    fontFamily: 'Montserrat'
                 }}
                 type={"text"} onClick={() => router.push("/authenticate/registration/")}>Get Started</Button>
         </div>

@@ -14,7 +14,7 @@ import "./businessReview.css"
 import GetRating from "../../util/GetRating";
 import NoDataGIF from "../../util/NoDataGIF";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || '';
+const BASE_URL = process.env.BASE_API_URL || '';
 
 const BusinessReview = () => {
     const businessId = useSelector((state) => state.business.businessId);

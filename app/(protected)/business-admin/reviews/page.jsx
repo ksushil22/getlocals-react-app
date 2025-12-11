@@ -3,7 +3,7 @@
 import React, { useContext, useEffect } from 'react';
 import { ActiveNavigationMenuContext } from '@/lib/context/ActiveNavigationProvider';
 import { NAVIGATION_ROUTES } from '@/lib/constants/componentConstants';
-import BusinessReview from '@/components/business/businessReview/BusinessReview';
+import BusinessReview from '@/components/business-admin/businessReview/BusinessReview';
 
 export default function ReviewsPage() {
     const { updateActiveNavigationMenu } = useContext(ActiveNavigationMenuContext);

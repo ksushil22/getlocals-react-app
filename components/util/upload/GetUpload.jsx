@@ -193,7 +193,7 @@ export default function ({
     return (
         <div style={style}>
             <Upload
-                action={`${process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || ''}business/${businessId}/upload/${type}/`}
+                action={`${process.env.BASE_API_URL || ''}business/${businessId}/upload/${type}/`}
                 headers={{
                     'Authorization': `Bearer ${typeof window !== 'undefined' ? sessionStorage.getItem("access") || '' : ''}`
                 }}

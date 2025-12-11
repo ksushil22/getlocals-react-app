@@ -6,7 +6,7 @@ import {Col, Image, Row} from "antd";
 import {PUBLIC_BUSINESS_API} from "@/lib/redux/api_url";
 import {useSelector} from "react-redux";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL || process.env.BASE_API_URL || '';
+const BASE_URL = process.env.BASE_API_URL || '';
 
 const ContactRequestModal = ({
     visible,

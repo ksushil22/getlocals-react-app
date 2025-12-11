@@ -18,8 +18,9 @@ const Template1Home = ({
     const searchParams = useSearchParams();
     const [images, setImages] = useState([]);
     const {data: carouselImages, isLoading: loadingCarouselImages} = useGetBusinessImagesQuery({
-        'businessId': businessId, 'type': 'CAROUSEL'
-    })
+        businessId: businessId, 
+        type: 'CAROUSEL'
+    }, {skip: !businessId})
 
     const {
         data: businessData,
@@ -32,7 +33,7 @@ const Template1Home = ({
         if (scrollTo) {
             const timer = setTimeout(() => {
                 scrollToSection(scrollTo)
-            }, 2000);
+            }, 500);
             return () => clearTimeout(timer);
         } else {
             window.scrollTo({

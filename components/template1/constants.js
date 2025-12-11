@@ -9,15 +9,15 @@ export const COLORS = {
 }
 
 export const StyledLayout = styled(Layout)`  
-    font-family: 'Oswald', sans-serif !important;
+    font-family: 'Montserrat', sans-serif !important;
 `;
 
 export const StyledContent = styled(Content)`  
-    font-family: 'Oswald', sans-serif !important;
+    font-family: 'Montserrat', sans-serif !important;
 `;
 
 export const StyledFooter = styled(Footer)`
-    font-family: 'Oswald', sans-serif !important;
+    font-family: 'Montserrat', sans-serif !important;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -26,5 +26,5 @@ export const StyledFooter = styled(Footer)`
 `;
 
 export const StyledDiv = styled.div`
-    font-family: 'Oswald', sans-serif !important;
+    font-family: 'Montserrat', sans-serif !important;
 `;

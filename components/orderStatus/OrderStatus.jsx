@@ -26,7 +26,7 @@ const OrderStatus = ({ orderNumber }) => {
     useEffect(() => {
         switch(order?.status) {
             case "PREPARING": setStatus("👨‍🍳 Our Chef is Preparing your Order"); break;
-            case "READY": setStatus("🎉 You can pick you Order Whenever you like"); break;
+            case "READY": setStatus("🎉 You can pick your Order Whenever you like"); break;
             case "PENDING": setStatus("We're Confirming your Order!"); break;
             case "DECLINED": setStatus("😔 Sorry! Looks like we cannot fulfill your Order"); break;
             default: setStatus("🍽️ Hope you're Enjoying your Order"); break;

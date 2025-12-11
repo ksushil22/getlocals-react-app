@@ -13,7 +13,7 @@ const GetLocalsHome = () => {
     const router = useRouter();
     return <div style={{
         background: 'white',
-        fontFamily: 'Oswald'
+        fontFamily: 'Montserrat'
     }}>
         <Navigator/>
         <MarketingInformationDiv>

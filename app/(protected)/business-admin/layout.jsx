@@ -3,9 +3,9 @@
 import React from 'react';
 import { Layout } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
-import MainNavigation from '@/components/business/layout/MainNavigation';
+import MainNavigation from '@/components/business-admin/layout/MainNavigation';
 import { WebSocketProvider } from '@/lib/context/WebSocketContext';
-import '@/components/business/layout/layout.css';
+import '@/components/business-admin/layout/layout.css';
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint';
 
 export default function BusinessAdminLayout({ children }) {

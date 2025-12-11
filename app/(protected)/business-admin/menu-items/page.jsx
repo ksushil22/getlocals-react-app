@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useContext, useEffect } from 'react';
-import BusinessMenu from '@/components/business/menu/BusinessMenu';
+import BusinessMenu from '@/components/business-admin/menu/BusinessMenu';
 import { ActiveNavigationMenuContext } from '@/lib/context/ActiveNavigationProvider';
 import { NAVIGATION_ROUTES } from '@/lib/constants/componentConstants';
 

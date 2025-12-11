@@ -2,7 +2,6 @@
 
 import React, {useState} from 'react';
 import {Drawer, List} from "antd";
-import {templateIds} from "../../util/TemplateIdConstants";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import {COLORS, StyledDiv} from "../constants";
 import {useSelector} from "react-redux";
@@ -14,20 +13,19 @@ import "./style.css"
 import {scrollToSection} from "../../util/Commons";
 import {useGetBusinessLogoQuery} from "@/lib/redux/services/businessAPI";
 import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
-const TEMPLATE_ID = templateIds.Template1;
 
-export const items = (lastSegment, router) =>  [
+export const items = (lastSegment, router, businessSlug) =>  [
     {
-        label: (<Link href={`/${TEMPLATE_ID}/home/`} style={{color: COLORS.PRIMARY_COLOR}}>Home</Link>),
+        label: (<Link href={`/home`} style={{color: COLORS.PRIMARY_COLOR}}>Home</Link>),
         key: 'home',
         icon: <FontAwesomeIcon icon={faHouseUser}/>,
-        link: `/${TEMPLATE_ID}/home/`
+        link: `/home`
     },
     {
-        label: (<Link href={`/${TEMPLATE_ID}/menu`} style={{color: COLORS.PRIMARY_COLOR}}>Menu</Link>),
+        label: (<Link href={`/menu`} style={{color: COLORS.PRIMARY_COLOR}}>Menu</Link>),
         key: 'menu',
         icon: <FontAwesomeIcon icon={faBookOpen}/>,
-        link: `/${TEMPLATE_ID}/menu/`
+        link: `/menu`
     },
     {
         label: (<span style={{color: COLORS.PRIMARY_COLOR}}>Review</span>),
@@ -37,7 +35,7 @@ export const items = (lastSegment, router) =>  [
             if (lastSegment === 'home') {
                 scrollToSection('review')
             } else {
-                router.push(`/${TEMPLATE_ID}/home/?scrollTo=review`);
+                router.push(`/home?scrollTo=review`);
             }
         }
     },
@@ -49,7 +47,7 @@ export const items = (lastSegment, router) =>  [
             if (lastSegment === 'home') {
                 scrollToSection('about-us')
             } else {
-                router.push(`/${TEMPLATE_ID}/home/?scrollTo=about-us`);
+                router.push(`/home?scrollTo=about-us`);
             }
         }
     }
@@ -63,6 +61,7 @@ const Template1NavBar = () => {
     const {data: logo, isLoading: loadingLogo} = useGetBusinessLogoQuery({businessId})
 
     const pathSegments = pathname.split('/').filter(segment => segment)
+    const businessSlug = pathSegments[0]; // First segment is the business slug
     const lastSegment = pathSegments[pathSegments.length-1];
 
     const Logo = () => (
@@ -76,7 +75,7 @@ const Template1NavBar = () => {
                     cursor: 'pointer'
                 }}
                 loading={"lazy"}
-                onClick={() => router.push(`/${TEMPLATE_ID}/home/`)}
+                onClick={() => router.push(`/home`)}
                 src={logo?.url}
                 alt={businessId}
             />)
@@ -112,7 +111,7 @@ const Template1NavBar = () => {
                 }}
             >
                 <List
-                    dataSource={items(lastSegment, router)}
+                    dataSource={items(lastSegment, router, businessSlug)}
                     size={"large"}
                     renderItem={(item) => (
                         <List.Item
@@ -154,8 +153,8 @@ const Template1NavBar = () => {
                 width: '100%',
                 height: 60
             }}
-            grid={{gutter: 24, column: items(lastSegment, navigate).length}}
-            dataSource={items(lastSegment, navigate)}
+            grid={{gutter: 24, column: items(lastSegment, router, businessSlug).length}}
+            dataSource={items(lastSegment, router, businessSlug)}
             size={"large"}
             renderItem={item => (
                 <StyledDiv
@@ -163,7 +162,7 @@ const Template1NavBar = () => {
                         if (item.callback) {
                             item.callback()
                         } else {
-                            navigate(item.link)
+                            router.push(item.link)
                         }
                     }}
                     className={'navbar-item'}

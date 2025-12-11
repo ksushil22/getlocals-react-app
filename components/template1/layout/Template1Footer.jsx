@@ -19,6 +19,7 @@ const StyledFooterContainer = styled.div`
     align-items: center;
     width: 80%;
     padding: 1rem;
+    font-family: 'Montserrat', sans-serif;
 
     @media (max-width: 1052px) {
         flex-direction: column;

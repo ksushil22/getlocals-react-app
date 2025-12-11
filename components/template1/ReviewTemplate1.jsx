@@ -13,6 +13,7 @@ const ReviewContainer = styled.div`
     flex-direction: column;
     align-content: center;
     justify-content: center;
+    background-color: white;
 `
 
 const ReviewFormContainer = styled(Form)`

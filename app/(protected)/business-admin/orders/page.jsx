@@ -3,7 +3,7 @@
 import React, { useContext, useEffect } from 'react';
 import { ActiveNavigationMenuContext } from '@/lib/context/ActiveNavigationProvider';
 import { NAVIGATION_ROUTES } from '@/lib/constants/componentConstants';
-import Orders from '@/components/business/order/Orders';
+import Orders from '@/components/business-admin/order/Orders';
 
 export default function OrdersPage() {
     const { updateActiveNavigationMenu } = useContext(ActiveNavigationMenuContext);
