@@ -16,10 +16,10 @@ import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 
 export const items = (lastSegment, router, businessSlug) =>  [
     {
-        label: (<Link href={`/home`} style={{color: COLORS.PRIMARY_COLOR}}>Home</Link>),
+        label: (<Link href={`/`} style={{color: COLORS.PRIMARY_COLOR}}>Home</Link>),
         key: 'home',
         icon: <FontAwesomeIcon icon={faHouseUser}/>,
-        link: `/home`
+        link: `/`
     },
     {
         label: (<Link href={`/menu`} style={{color: COLORS.PRIMARY_COLOR}}>Menu</Link>),
@@ -32,10 +32,10 @@ export const items = (lastSegment, router, businessSlug) =>  [
         key: 'reviews',
         icon: <FontAwesomeIcon icon={faStar}/>,
         callback: () => {
-            if (lastSegment === 'home') {
+            if (lastSegment === 'home' || !lastSegment) {
                 scrollToSection('review')
             } else {
-                router.push(`/home?scrollTo=review`);
+                router.push(`/?scrollTo=review`);
             }
         }
     },
@@ -44,10 +44,10 @@ export const items = (lastSegment, router, businessSlug) =>  [
         key: 'about-us',
         icon: <FontAwesomeIcon icon={faCommentDots}/>,
         callback: () => {
-            if (lastSegment === 'home') {
+            if (lastSegment === 'home' || !lastSegment) {
                 scrollToSection('about-us')
             } else {
-                router.push(`/home?scrollTo=about-us`);
+                router.push(`/?scrollTo=about-us`);
             }
         }
     }
@@ -75,7 +75,7 @@ const Template1NavBar = () => {
                     cursor: 'pointer'
                 }}
                 loading={"lazy"}
-                onClick={() => router.push(`/home`)}
+                onClick={() => router.push(`/`)}
                 src={logo?.url}
                 alt={businessId}
             />)

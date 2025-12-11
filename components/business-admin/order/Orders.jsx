@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
     Container, Header, Title, ConnectionWrapper, ConnectionStatus,
     StatusIndicator, OrderStatusButton, ClearButton, ErrorMessage,
@@ -23,6 +23,7 @@ import {useSelector} from "react-redux";
 export default function Orders() {
     const { newOrder, isConnected, error, connect, disconnect } = useWebSocket();
     const businessId = useSelector((state) => state.business.businessId)
+    const prevIsConnected = useRef(false);
 
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -60,8 +61,20 @@ export default function Orders() {
     }, [pendingOrders])
 
     useEffect(() => {
-        if (isConnected) triggerPendingOrderQuery(businessId);
+        if (businessId && isConnected) {
+            triggerPendingOrderQuery(businessId);
+        }
     }, [businessId, triggerPendingOrderQuery, isConnected])
+    
+    // Refetch orders when connection is restored after being disconnected
+    useEffect(() => {
+        // Check if we just reconnected (was disconnected, now connected)
+        if (!prevIsConnected.current && isConnected && businessId) {
+            console.log("🔄 Reconnected - refetching orders...");
+            triggerPendingOrderQuery(businessId);
+        }
+        prevIsConnected.current = isConnected;
+    }, [isConnected, businessId, triggerPendingOrderQuery]);
 
     // Keep selected order in sync with orders array
     useEffect(() => {

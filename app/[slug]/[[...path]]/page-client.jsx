@@ -14,14 +14,8 @@ export default function ClientSlugPage({ params, initialBusinessData }) {
     const router = useRouter();
     const slug = params.slug;
     const path = params.path || [];
-    const route = path[0];
-    
-    // Redirect to /home if no path is provided (e.g., visiting /slug instead of /slug/home)
-    useEffect(() => {
-        if (!route) {
-            router.replace(`/home`);
-        }
-    }, [route, slug, router]);
+    // Treat empty path as 'home' - no redirect needed
+    const route = path[0] || 'home';
     
     // Use a ref to track if we've already set cookies to prevent infinite loops
     const cookiesSetRef = useRef(false);
@@ -67,11 +61,6 @@ export default function ClientSlugPage({ params, initialBusinessData }) {
         return null;
     }
 
-    // If no route, show loader while redirecting
-    if (!route) {
-        return <GetLoader display={DISPLAY.FULLSCREEN} spinner={SPINNERS.ROTATING_DOT_SPINNER} />;
-    }
-
     // Wait for template information to be loaded
     if (!templateId || !businessId) {
         // If we're still waiting for Redux to be populated
@@ -115,8 +104,8 @@ export default function ClientSlugPage({ params, initialBusinessData }) {
         return <Component businessId={businessId} />;
     }
 
-    // If route doesn't exist in template, redirect to home
-    router.replace(`/home`);
+    // If route doesn't exist in template, redirect to root (home)
+    router.replace(`/${slug}`);
     return <GetLoader display={DISPLAY.FULLSCREEN} spinner={SPINNERS.ROTATING_DOT_SPINNER} />;
 }
 

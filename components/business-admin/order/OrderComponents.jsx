@@ -492,6 +492,7 @@ export const OrderStatusBadge = styled.div`
 export const ActiveOrdersContainer = styled.div`
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     min-height: 200px;
 `;
 

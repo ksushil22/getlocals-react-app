@@ -23,14 +23,23 @@ export async function generateMetadata({ params }) {
         }
         
         const pagePath = params.path?.[0] || 'home';
-        const pageTitle = pagePath.charAt(0).toUpperCase() + pagePath.slice(1);
-        const businessName = tenantInfo.businessName || params.slug;
+        // Format page names nicely
+        const pageNameMap = {
+            'home': 'Home',
+            'menu': 'Menu',
+            'order-status': 'Order Status',
+            // Add more as needed
+        };
+        const pageTitle = pageNameMap[pagePath] || pagePath.charAt(0).toUpperCase() + pagePath.slice(1);
+        
+        // Try multiple possible field names for business name
+        const businessName = tenantInfo.businessName || tenantInfo.name || tenantInfo.businessUsername || params.slug;
         
         return {
-            title: `${businessName} - ${pageTitle}`,
+            title: `${businessName} | ${pageTitle}`,
             description: tenantInfo.description || `Welcome to ${businessName}`,
             openGraph: {
-                title: `${businessName} - ${pageTitle}`,
+                title: `${businessName} | ${pageTitle}`,
                 description: tenantInfo.description || `Welcome to ${businessName}`,
                 type: 'website',
                 locale: 'en_US',
@@ -39,7 +48,7 @@ export async function generateMetadata({ params }) {
             },
             twitter: {
                 card: 'summary_large_image',
-                title: `${businessName} - ${pageTitle}`,
+                title: `${businessName} | ${pageTitle}`,
                 description: tenantInfo.description || `Welcome to ${businessName}`
             },
             alternates: {
