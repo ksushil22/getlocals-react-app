@@ -2,11 +2,20 @@ import React from 'react';
 import {COLORS} from "./constants";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import GetAnimation from "../util/GetAnimation";
-import { getImageUrl } from "@/lib/utils/imageUtils";
 import {Image} from "antd";
 
-const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName}) => {
+/**
+ * AboutUsTemplate1 Component
+ * 
+ * Note: businessOwnerImageId is deprecated. Use ownerImageUrl instead.
+ * Legacy `/image/{id}` endpoints are removed, so we rely on backend to include ownerImageUrl.
+ */
+const AboutUsTemplate1 = ({about, businessOwnerImageId, businessOwnerImageUrl, businessId, businessName}) => {
     const screens = useBreakpoint();
+    
+    // Prefer ownerImageUrl from backend (if available), otherwise no image will show
+    // Legacy `/image/{id}` endpoint is removed
+    const imageUrl = businessOwnerImageUrl || null;
 
     return <div style={{
         backgroundColor: COLORS.PRIMARY_BACKGROUND,
@@ -36,22 +45,24 @@ const AboutUsTemplate1 = ({about, businessOwnerImageId, businessId, businessName
                      justifyContent: 'center',
                      flex: screens.md ? '0 0 40%' : '1'}}>
 
-                <GetAnimation
-                    animateOnce={true}
-                    animateIn={"fadeInLeft"}
-                    duration={1}>
-                    <Image
-                        src={getImageUrl(businessId, businessOwnerImageId)}
-                        height={'70vh'}
-                        width={'auto'}
-                        style={{
-                            objectFit: 'contain'
-                        }}
-                        alt={`${businessName} owner`}
-                        loading="lazy"
-                        preview={false}
-                    />
-                </GetAnimation>
+                {imageUrl && (
+                    <GetAnimation
+                        animateOnce={true}
+                        animateIn={"fadeInLeft"}
+                        duration={1}>
+                        <Image
+                            src={imageUrl}
+                            height={'70vh'}
+                            width={'auto'}
+                            style={{
+                                objectFit: 'contain'
+                            }}
+                            alt={`${businessName} owner`}
+                            loading="lazy"
+                            preview={false}
+                        />
+                    </GetAnimation>
+                )}
             </div>
             <div className="about-us-container" style={{
                 flex: 1,

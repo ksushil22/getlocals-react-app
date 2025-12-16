@@ -1,20 +1,20 @@
 'use client';
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useSelector} from "react-redux";
 import {useUserProfileQuery} from "@/lib/redux/services/authAPI";
 import {Row} from "antd";
 import "./home.css"
 import AboutUs from "./AboutUs";
-import {useLazyGetBusinessQuery} from "@/lib/redux/services/businessAPI";
+import {useLazyGetBusinessQuery, useGetBusinessImagesQuery} from "@/lib/redux/services/businessAPI";
 import GetUpload from "../../util/upload/GetUpload";
 import CustomPopover from "../../util/CustomPopover";
 import BusinessSelector from "../../util/BusinessSelector";
 import BusinessHeading from "../../util/BusinessHeading";
 import Timings from "./Timings";
 import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
-import {PUBLIC_BUSINESS_API} from "@/lib/redux/api_url";
 import ContactInformation from "./ContactInformation";
+import {buildImageMap, getImageFromMap} from "../../util/Commons";
 
 export default function Home() {
     const {data: userProfileData, isLoading} = useUserProfileQuery();
@@ -24,21 +24,36 @@ export default function Home() {
     }] = useLazyGetBusinessQuery();
     const [logoImage, setLogoImage] = useState([])
     const businessId = useSelector((state) => state.business.businessId)
+    
+    // Fetch LOGO images to get logo URL
+    const {data: logoImages} = useGetBusinessImagesQuery(
+        {businessId, type: 'LOGO'}, 
+        {skip: !businessId}
+    );
+    
+    // Build image map for logo lookup
+    const imageMap = useMemo(() => buildImageMap(logoImages), [logoImages]);
 
     useEffect(() => {
         if (businessData) {
             if (businessData.logo) {
+                // Get logo URL from image map or from businessData if backend provides it
+                const imageData = getImageFromMap(imageMap, businessData.logo);
+                const logoUrl = businessData.logoUrl || imageData?.imageUrl || null;
+                
                 setLogoImage([
                     {
-                        uid: businessId,
+                        uid: businessData.logo,
                         name: businessData.name,
                         status: 'done',
-                        url: `${process.env.BASE_API_URL || ''}${PUBLIC_BUSINESS_API}${businessId}/image/${businessData.logo}/`
+                        url: logoUrl
                     }
                 ])
+            } else {
+                setLogoImage([])
             }
         }
-    }, [businessData]);
+    }, [businessData, imageMap]);
 
     useEffect(() => {
         if (businessId) {

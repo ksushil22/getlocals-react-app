@@ -9,7 +9,7 @@ import {
     StyledInput, TotalItemsCard
 } from "./CartComponents";
 import {Divider, Form, notification} from "antd";
-import {calculatePlatformFee, calculateTax, getImageUrl, roundTo2} from "../../../util/Commons";
+import {calculatePlatformFee, calculateTax, roundTo2} from "../../../util/Commons";
 import {EmptyCart} from "./EmptyCartGIF";
 import {DollarOutlined, ShoppingCartOutlined, UserOutlined} from "@ant-design/icons";
 import GetAnimation from "../../../util/GetAnimation";
@@ -122,11 +122,12 @@ const CartList = memo(({cart, businessId}) => {
                 </Divider>
                 <GetAnimation animateIn="fadeInDown">
                     {cartEntries.map(({object, count}, index) => {
-                        const imageUrl = getImageUrl(businessId, object.imageId);
+                        // Image URL comes directly from the menu item (backend includes full image data)
+                        const imageUrl = object.imageUrl || null;
                         return (
                             <CartItemCard key={index}>
                                 <ItemInfo>
-                                    {object.imageId && <ItemImage src={imageUrl} alt={object.name}/>}
+                                    {imageUrl && <ItemImage src={imageUrl} alt={object.name}/>}
                                     <div>
                                         <span>{object.name}</span>
                                         <br/>

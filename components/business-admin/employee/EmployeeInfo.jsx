@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Button, Form, Image, Input, List, Row, Select, Space} from "antd";
 import BusinessHeading from "../../util/BusinessHeading";
 import GetUpload from "../../util/upload/GetUpload";
@@ -8,20 +8,22 @@ import "./employee.css"
 import {
     useCreateEmployeeInfoMutation, useDeleteEmployeeMutation,
     useGetEmployeesQuery,
-    useUpdateEmployeeInfoMutation
+    useUpdateEmployeeInfoMutation,
+    useGetBusinessImagesQuery
 } from "@/lib/redux/services/businessAPI";
 import {useSelector} from "react-redux";
 import NoDataGIF from "../../util/NoDataGIF";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faDeleteLeft, faEdit, faPhone, faReply} from "@fortawesome/free-solid-svg-icons";
-import {PUBLIC_BUSINESS_API} from "@/lib/redux/api_url";
 import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 import DeleteConfirmationModal from "../../util/modals/DeleteConfirmationModal";
+import {buildImageMap, getImageFromMap} from "../../util/Commons";
 
-const BASE_URL = process.env.BASE_API_URL || '';
-
-function EmployeeCard({item, businessId, setupUpdateItem, setUpdateId, setModalVisible}) {
+function EmployeeCard({item, imageMap, setupUpdateItem, setUpdateId, setModalVisible}) {
+    // Get image URL from employee data or from image map
+    const imageData = getImageFromMap(imageMap, item.imageId);
+    const imageUrl = item.imageUrl || item.image?.url || imageData?.imageUrl || null;
 
     return <List.Item
         className={"item-card"}
@@ -52,10 +54,10 @@ function EmployeeCard({item, businessId, setupUpdateItem, setUpdateId, setModalV
             </Space>,
         ]}
         extra={
-        item.imageId && (
+        imageUrl && (
             <Image
                 alt={item.firstName}
-                src={`${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/image/${item.imageId}/`}
+                src={imageUrl}
                 style={{
                     borderRadius: '5px',
                     width: 150,
@@ -97,6 +99,15 @@ const EmployeeInfo = () => {
         error: errorLoadingEmployee
     } = useGetEmployeesQuery({businessId});
     const [deleteEmployee, {isLoading: idDeletingEmployee}] = useDeleteEmployeeMutation();
+    
+    // Fetch EMPLOYEE images to build image URL map
+    const {data: employeeImages} = useGetBusinessImagesQuery(
+        {businessId, type: 'EMPLOYEE'}, 
+        {skip: !businessId}
+    );
+    
+    // Build image map for quick lookup
+    const imageMap = useMemo(() => buildImageMap(employeeImages), [employeeImages]);
 
     const EmployeeForm = () => {
         const [imageId, setImageId] = useState(null)
@@ -238,11 +249,15 @@ const EmployeeInfo = () => {
         window.scroll({top: 0, left: 0, behavior: 'smooth' })
         setIsUpdating(true)
         if (item.imageId) {
+            // Get image URL from employee or from image map
+            const imageData = getImageFromMap(imageMap, item.imageId);
+            const imageUrl = item.imageUrl || item.image?.url || imageData?.imageUrl || null;
+            
             setInitialImageList([{
                 uid: item?.imageId,
                 name: item?.firstName,
                 status: 'done',
-                url: `${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/image/${item.imageId}/`
+                url: imageUrl
             }])
         } else {
             setInitialImageList([])
@@ -280,7 +295,7 @@ const EmployeeInfo = () => {
                     renderItem={(item) => (
                         <EmployeeCard
                             item={item}
-                            businessId={businessId}
+                            imageMap={imageMap}
                             setUpdateId={setUpdateId}
                             setupUpdateItem={setupUpdateItem}
                             setModalVisible={setDeleteEmployeeModalVisible}

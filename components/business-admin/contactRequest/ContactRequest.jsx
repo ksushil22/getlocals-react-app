@@ -6,14 +6,11 @@ import BusinessHeading from "../../util/BusinessHeading";
 import {useGetAllContactRequestsQuery} from "@/lib/redux/services/businessAPI";
 import {useSelector} from "react-redux";
 import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
-import {PUBLIC_BUSINESS_API} from "@/lib/redux/api_url";
 import NoDataGIF from "../../util/NoDataGIF";
 import ContactRequestModal from "./ContactRequestModal";
 
 import './contactRequest.css'
 
-
-const BASE_URL = process.env.BASE_API_URL || '';
 
 const ContactRequest = () => {
     const businessId = useSelector((state) => state.business.businessId);
@@ -32,6 +29,10 @@ const ContactRequest = () => {
     }, [businessId])
 
     const ContactItemCard = ({item}) => {
+        // Use imageUrl from backend if available (preferred)
+        // Legacy `/image/{id}` endpoints are removed, so we rely on backend to include imageUrl
+        const imageUrl = item?.imageUrl || null;
+        
         return <List.Item
             onClick={() => {
                 setModalData(item)
@@ -43,11 +44,11 @@ const ContactRequest = () => {
                 cursor: 'pointer'
             }}
             extra={
-                item?.imageId && (
+                imageUrl && (
                     <Image
                         preview={false}
                         alt={item.fullName}
-                        src={`${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/image/${item.imageId}/`}
+                        src={imageUrl}
                         style={{
                             width: 150,
                             height: 150,

@@ -74,6 +74,7 @@ const Template1Home = ({
         <AboutUsTemplate1 about={businessData?.aboutUs}
                           businessId={businessId}
                           businessOwnerImageId={businessData?.ownerImageId}
+                          businessOwnerImageUrl={businessData?.ownerImageUrl}
                           businessName={businessData?.name}/>
         <TeamTemplate1 businessId={businessId} />
         <ReviewTemplate1 />

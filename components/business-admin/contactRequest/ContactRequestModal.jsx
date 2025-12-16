@@ -3,10 +3,7 @@
 import React from "react";
 import ModalPopup from "../../util/modals/ModalPopup";
 import {Col, Image, Row} from "antd";
-import {PUBLIC_BUSINESS_API} from "@/lib/redux/api_url";
 import {useSelector} from "react-redux";
-
-const BASE_URL = process.env.BASE_API_URL || '';
 
 const ContactRequestModal = ({
     visible,
@@ -15,6 +12,10 @@ const ContactRequestModal = ({
     setRequest
 }) => {
     const businessId = useSelector((state) => state.business.businessId);
+    
+    // Use imageUrl from backend if available (preferred)
+    // Legacy `/image/{id}` endpoints are removed, so we rely on backend to include imageUrl
+    const imageUrl = request?.imageUrl || null;
 
     return <ModalPopup
         visible={visible}
@@ -30,14 +31,14 @@ const ContactRequestModal = ({
         <Row style={{
             textAlign: 'left'
         }}>
-            {request?.imageId && (
+            {imageUrl && (
                 <Col style={{
                     textAlign: 'center'
                 }} sm={24} md={24} lg={24}>
                     <Image
                         width={200}
                         alt={request?.fullName}
-                        src={`${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/image/${request?.imageId}/`}
+                        src={imageUrl}
                         style={{
                             borderRadius: '5px'
                         }}

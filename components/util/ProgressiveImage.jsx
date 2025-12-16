@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Skeleton } from 'antd';
-import { getThumbnailUrl, getImageUrl, loadImageWithFallback, shouldUseThumbnailOnly } from '@/lib/utils/imageUtils';
+import { loadImageWithFallback, shouldUseThumbnailOnly } from '@/lib/utils/imageUtils';
 import './ProgressiveImage.css';
 
 /**
  * Progressive Image Component
  * Loads thumbnail first, then progressively loads the full image
  * 
+ * Now accepts direct URLs instead of businessId/imageId (legacy endpoints removed)
+ * 
  * @param {Object} props
- * @param {string} props.businessId - The business ID
- * @param {string} props.imageId - The image ID
+ * @param {string} props.imageUrl - The full image URL (required)
+ * @param {string} props.thumbnailUrl - The thumbnail URL (optional)
  * @param {string} props.alt - Alt text for the image
  * @param {string} props.className - CSS class name
  * @param {Object} props.style - Inline styles
@@ -23,8 +25,8 @@ import './ProgressiveImage.css';
  * @param {boolean} props.lazy - Enable lazy loading with IntersectionObserver
  */
 const ProgressiveImage = ({ 
-    businessId, 
-    imageId, 
+    imageUrl,
+    thumbnailUrl,
     alt = '', 
     className = '', 
     style = {},
@@ -74,36 +76,39 @@ const ProgressiveImage = ({
 
     // Load images when in view
     useEffect(() => {
-        if (!businessId || !imageId || !isInView) return;
+        if (!imageUrl || !isInView) return;
 
         const loadImages = async () => {
             try {
-                const thumbnailUrl = getThumbnailUrl(businessId, imageId);
-                const fullUrl = getImageUrl(businessId, imageId);
-
                 if (autoUseThumbnailOnly || !autoLoadFull) {
-                    // Load only thumbnail
-                    await loadImageWithFallback(thumbnailUrl);
-                    setCurrentSrc(thumbnailUrl);
+                    // Load only thumbnail if available, otherwise full image
+                    const urlToLoad = thumbnailUrl || imageUrl;
+                    await loadImageWithFallback(urlToLoad);
+                    setCurrentSrc(urlToLoad);
                     setIsLoading(false);
                     onLoad?.();
                 } else {
-                    // Try to load thumbnail first
-                    try {
-                        await loadImageWithFallback(thumbnailUrl);
-                        setCurrentSrc(thumbnailUrl);
-                        setIsLoading(false);
-                        setIsLoadingFull(true);
-                    } catch (thumbError) {
-                        // If thumbnail fails, skip directly to full image
-                        console.warn('Thumbnail not available, loading full image directly');
+                    // Progressive loading: try thumbnail first, then full
+                    if (thumbnailUrl) {
+                        try {
+                            await loadImageWithFallback(thumbnailUrl);
+                            setCurrentSrc(thumbnailUrl);
+                            setIsLoading(false);
+                            setIsLoadingFull(true);
+                        } catch (thumbError) {
+                            // If thumbnail fails, skip directly to full image
+                            console.warn('Thumbnail not available, loading full image directly');
+                            setIsLoadingFull(true);
+                        }
+                    } else {
                         setIsLoadingFull(true);
                     }
 
                     // Load full image
                     try {
-                        await loadImageWithFallback(fullUrl);
-                        setCurrentSrc(fullUrl);
+                        await loadImageWithFallback(imageUrl);
+                        setCurrentSrc(imageUrl);
+                        setIsLoading(false);
                         setIsLoadingFull(false);
                         onLoad?.();
                     } catch (fullError) {
@@ -125,7 +130,7 @@ const ProgressiveImage = ({
         };
 
         loadImages();
-    }, [businessId, imageId, isInView, autoUseThumbnailOnly, autoLoadFull, onLoad, onError]);
+    }, [imageUrl, thumbnailUrl, isInView, autoUseThumbnailOnly, autoLoadFull, onLoad, onError]);
 
     // Show skeleton loader
     if (isLoading && showLoader) {

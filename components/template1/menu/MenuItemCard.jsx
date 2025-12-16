@@ -121,8 +121,8 @@ const ItemCard = memo(({ item, cart, setCart, businessId, setCount, count }) => 
             <div style={{ display: "flex", flex: 0.95, flexDirection: "row" }}>
                 <div style={{ display: "flex", alignItems: "center", minWidth: 100 }}>
                     <PreviewableImage
-                        businessId={businessId}
-                        imageId={item.imageId}
+                        imageUrl={item.imageUrl}
+                        thumbnailUrl={item.thumbnailUrl}
                         alt={item.name}
                         width={100}
                         height={100}
