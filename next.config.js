@@ -4,8 +4,8 @@ const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BASE_API_URL: process.env.BASE_API_URL,
-    WS_URL: process.env.WS_URL,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
   },
   
   // Configure images
