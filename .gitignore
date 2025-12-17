@@ -30,7 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Testing
-coverage/
+coverage
 
 # Archive (optional - remove if you want to track it)
 # archive/
