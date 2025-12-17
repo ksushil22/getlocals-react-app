@@ -43,7 +43,7 @@ export function middleware(request) {
     }
 
     // main domains where we support subdomains
-    const tenantRoots = ['localhost', 'getlocals.ca'];
+    const tenantRoots = ['localhost', 'get-locals.ca'];
 
     // If not one of our tenant roots, do nothing
     if (!tenantRoots.includes(rootDomain)) {
