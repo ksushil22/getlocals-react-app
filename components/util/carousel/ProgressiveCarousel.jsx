@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
-import { getImageUrl } from '@/lib/utils/imageUtils';
 
 /**
  * Progressive Carousel Component
  * Displays carousel images at full resolution for best quality
  * 
- * @param {Array} images - Array of image objects with {id, name} properties
- * @param {string} businessId - Business ID for fetching images
+ * @param {Array} images - Array of image objects with {id, name, imageUrl, thumbnailUrl} properties
+ * @param {string} businessId - Business ID (kept for backwards compatibility, but not used for URL generation)
  * @param {number} time - Auto-rotation time in milliseconds
  * @param {string} background - Background color
  * @param {Object} customStyle - Custom styles
@@ -98,9 +97,10 @@ const ProgressiveCarousel = ({
                         className={`carousel-item ${index === currentIndex ? 'active' : ''}`}
                         key={image.id || index}
                     >
-                        {businessId && image.id ? (
+                        {/* Use imageUrl directly from the image object */}
+                        {image.imageUrl ? (
                             <img 
-                                src={getImageUrl(businessId, image.id)}
+                                src={image.imageUrl}
                                 alt={image.name || `Image ${index + 1}`}
                                 style={{
                                     width: '100%',
@@ -110,7 +110,7 @@ const ProgressiveCarousel = ({
                                 loading="eager"
                             />
                         ) : (
-                            // Fallback for legacy base64 images
+                            // Fallback for legacy format or direct URL strings
                             <img 
                                 src={image.url || image} 
                                 alt={image.name || `Image ${index + 1}`} 

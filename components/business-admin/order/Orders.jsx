@@ -6,7 +6,7 @@ import {
     StatusIndicator, OrderStatusButton, ClearButton, ErrorMessage,
     SplitContainer, OrdersListPanel, OrderDetailPanel,
     OrderListItem, OrderListHeader, OrderCustomerName, OrderItemCount,
-    OrderDetailHeader, OrderDetailContent, CustomerInfo,
+    OrderDetailHeader, OrderDetailContent, CustomerInfo, OrderTotalPrice,
     ItemsList, ItemRow, ItemQuantity, ItemName,
     AdditionalInstructions, ActionButtons, AcceptButton, RejectButton,
     EmptyDetailState, EmptyListState, OrderIdBadge, OrderStatusBadge, ActiveOrdersContainer, HistoricalOrdersWrapper,
@@ -18,6 +18,7 @@ import {
 } from "@/lib/redux/services/orderAPI";
 import GetLoader, {DISPLAY, SPINNERS} from "../../util/customSpinner/GetLoader";
 import {useSelector} from "react-redux";
+import {roundTo2} from "../../util/Commons";
 
 
 export default function Orders() {
@@ -238,6 +239,7 @@ export default function Orders() {
                                     <p><strong>Email:</strong> {selectedOrder.email}</p>
                                     <p><strong>Phone:</strong> {selectedOrder.phoneNo}</p>
                                 </CustomerInfo>
+
                                 {selectedOrder.status === 'PENDING' && (
                                     <ActionButtons>
                                         <AcceptButton loading={updatingOrderStatus} onClick={() => handleUpdateOrderStatus(selectedOrder.orderNumber, 'PREPARING')}>
@@ -302,6 +304,13 @@ export default function Orders() {
 
                                     </div>
                                 </ItemsList>
+                                
+                                {selectedOrder.totalPrice && (
+                                    <OrderTotalPrice>
+                                        <div className="label">Order Total</div>
+                                        <div className="price">${roundTo2(selectedOrder.totalPrice, true)}</div>
+                                    </OrderTotalPrice>
+                                )}
 
                             </OrderDetailContent>
                         </>

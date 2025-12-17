@@ -9,12 +9,9 @@ import {Image, List, Row, Space} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPhone, faReply} from "@fortawesome/free-solid-svg-icons";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
-import {PUBLIC_BUSINESS_API} from "@/lib/redux/api_url";
 import "./businessReview.css"
 import GetRating from "../../util/GetRating";
 import NoDataGIF from "../../util/NoDataGIF";
-
-const BASE_URL = process.env.BASE_API_URL || '';
 
 const BusinessReview = () => {
     const businessId = useSelector((state) => state.business.businessId);
@@ -56,6 +53,10 @@ const BusinessReview = () => {
 const ReviewCards = ({item, businessId}) => {
     const screens = useBreakpoint();
     const cardMargin = screens.md || screens.lg || screens.xl || screens.xxl ? 50 : 12;
+    
+    // Use imageUrl from backend if available (preferred)
+    // Legacy `/image/{id}` endpoints are removed, so we rely on backend to include imageUrl
+    const imageUrl = item?.imageUrl || null;
 
     return <List.Item
         className={"item-card"}
@@ -98,10 +99,10 @@ const ReviewCards = ({item, businessId}) => {
             </Space>,
         ].filter(Boolean)}
         extra={
-            item.imageId ?
+            imageUrl ?
             <Image
                 alt={item.fullName}
-                src={`${BASE_URL}${PUBLIC_BUSINESS_API}${businessId}/image/${item.imageId}`}
+                src={imageUrl}
                 style={{
                     width: 150,
                     height: 150,

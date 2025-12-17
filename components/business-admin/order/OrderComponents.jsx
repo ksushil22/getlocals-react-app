@@ -312,6 +312,30 @@ export const CustomerInfo = styled.div`
     }
 `;
 
+export const OrderTotalPrice = styled.div`
+    background: linear-gradient(135deg, var(--primary-color) 0%,rgb(255, 255, 255) 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(24, 144, 255, 0.2);
+    
+    .label {
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+    
+    .price {
+        font-size: 32px;
+        font-weight: 700;
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+`;
+
 export const ItemsList = styled.div`
     margin-bottom: 10px;
 

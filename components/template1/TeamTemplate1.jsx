@@ -1,8 +1,8 @@
-import React from 'react';
-import {useGetEmployeesQuery} from "@/lib/redux/services/businessAPI";
+import React, {useMemo} from 'react';
+import {useGetEmployeesQuery, useGetBusinessImagesQuery} from "@/lib/redux/services/businessAPI";
 import GetAnimation from "../util/GetAnimation";
 import styled from "styled-components";
-import { getImageUrl } from "@/lib/utils/imageUtils";
+import {buildImageMap, getImageFromMap} from "../util/Commons";
 
 const EmployeeListContainer = styled.div`
   display: flex;
@@ -47,6 +47,15 @@ const TeamTemplate1 = ({businessId}) => {
         data: teamData,
         isLoading: loadingTeamData
     } = useGetEmployeesQuery({businessId: businessId})
+    
+    // Fetch EMPLOYEE images to build image URL map as fallback
+    const {data: employeeImages} = useGetBusinessImagesQuery(
+        {businessId, type: 'EMPLOYEE'}, 
+        {skip: !businessId}
+    );
+    
+    // Build image map for quick lookup
+    const imageMap = useMemo(() => buildImageMap(employeeImages), [employeeImages]);
 
     return <div style={{
         width: '100%',
@@ -66,21 +75,29 @@ const TeamTemplate1 = ({businessId}) => {
             }}>Meet our team</p>
         </div>
         <EmployeeListContainer>
-            {teamData?.map((employee) => (
-                <GetAnimation animateIn={"zoomIn"} duration={1} key={employee.id}>
-                    <EmployeeContainer key={employee.id}>
-                        <EmployeeImage
-                            loading={"lazy"}
-                            src={employee.image?.uid ? getImageUrl(businessId, employee.image.uid) : employee.image?.url}
-                            alt={employee.displayName}
-                        />
-                        <EmployeeInfo>
-                            <h1>{employee.displayName}</h1>
-                            <p>{employee.description}</p>
-                        </EmployeeInfo>
-                    </EmployeeContainer>
-                </GetAnimation>
-            ))}
+            {teamData?.map((employee) => {
+                // Get image URL from employee data or from image map
+                const imageData = getImageFromMap(imageMap, employee.imageId);
+                const imageUrl = employee.imageUrl || employee.image?.url || imageData?.imageUrl || null;
+                
+                return (
+                    <GetAnimation animateIn={"zoomIn"} duration={1} key={employee.id}>
+                        <EmployeeContainer key={employee.id}>
+                            {imageUrl && (
+                                <EmployeeImage
+                                    loading={"lazy"}
+                                    src={imageUrl}
+                                    alt={employee.displayName}
+                                />
+                            )}
+                            <EmployeeInfo>
+                                <h1>{employee.displayName}</h1>
+                                <p>{employee.description}</p>
+                            </EmployeeInfo>
+                        </EmployeeContainer>
+                    </GetAnimation>
+                );
+            })}
         </EmployeeListContainer>
     </div>
 }

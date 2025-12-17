@@ -10,6 +10,8 @@ import GetLoader, {DISPLAY, SPINNERS} from "../customSpinner/GetLoader";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCloudArrowUp} from "@fortawesome/free-solid-svg-icons";
 import {shouldGenerateThumbnail} from "@/lib/constants/imageTypes";
+import {uploadBusinessImage} from "@/lib/utils/uploadBusinessImage";
+import {formatBytes} from "@/lib/utils/imageUtils";
 
 const {Text} = Typography;
 
@@ -20,15 +22,6 @@ const getBase64 = (file) =>
         reader.onload = () => resolve(reader.result);
         reader.onerror = (error) => reject(error);
     });
-
-const formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-};
 
 
 /**
@@ -67,33 +60,41 @@ export default function ({
     const shouldGenerateThumbnailForType = generateThumbnail !== null 
         ? generateThumbnail 
         : shouldGenerateThumbnail(type);
+
+    // Fetch existing images for this type (only when not using initialFileList)
     const {
         data: images,
         isLoading: loadingImages
-    } = useGetBusinessImagesQuery({businessId, type}, {skip: (type === "MENU") || (type === 'EMPLOYEE')});
+    } = useGetBusinessImagesQuery({businessId, type}, {skip: !businessId || updateInitialList});
+    
     const [deleteImage] = useDeleteImageMutation();
+    
     const handleCancel = () => {
         setPreviewOpen(false);
         setDeleteFile(false);
     };
 
+    // Handle external initial file list updates
     useEffect(() => {
-        if (updateInitialList) {
+        if (updateInitialList && initialFileList) {
             setFileList(initialFileList);
         }
     }, [initialFileList, updateInitialList, setFileList]);
 
+    // Map fetched images to AntD Upload fileList format
+    // Now uses imageUrl instead of base64
     useEffect(() => {
-        if (images) {
+        if (images && !updateInitialList) {
             const formattedImages = images.map((image) => ({
                 uid: image.id,
                 name: image.name,
                 status: 'done',
-                url: `data:${image.extension};base64,${image.image}`,
+                url: image.imageUrl, // Use direct URL from backend
+                thumbUrl: image.thumbnailUrl, // Thumbnail URL if available
             }));
             setFileList(formattedImages);
         }
-    }, [images]);
+    }, [images, updateInitialList]);
 
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
@@ -105,58 +106,31 @@ export default function ({
     };
 
     const handleChange = ({file, fileList: newFileList}) => {
-        if (file.status !== 'removed' && file.status === 'uploading') {
-            setFileList(newFileList);
-        }
+        // Always update fileList for UI consistency
+        setFileList(newFileList);
+        
         if (file.status === 'done') {
             const response = file.response;
             
-            // Handle both old and new response formats
-            const imageId = response.imageId || response.message;
-            const thumbnailId = response.thumbnailId;
-            
-            // Update file list with proper IDs
-            const updatedFileList = newFileList.map(f => {
-                if (f.uid === file.uid) {
-                    return {
-                        ...f,
-                        response: {
-                            ...response,
-                            imageId,
-                            thumbnailId
-                        }
-                    };
+            if (response && response.imageId) {
+                if (setUploadImageId) {
+                    setUploadImageId(response.imageId);
                 }
-                return f;
-            });
-            
-            setFileList(updatedFileList);
-            
-            if (setUploadImageId) {
-                setUploadImageId(imageId);
-            }
-            
-            // Show optimization feedback if available
-            if (response.compressionRatio) {
-                const savedBytes = response.originalSize - response.optimizedSize;
-                const savedSize = formatBytes(savedBytes);
-                const compressionPercent = response.compressionRatio.toFixed(0);
                 
+                // Show optimization feedback
                 message.success({
                     content: (
                         <div>
                             <div>Image uploaded successfully!</div>
-                            <div style={{ fontSize: '12px', marginTop: '4px' }}>
-                                Optimized: {compressionPercent}% smaller ({savedSize} saved)
-                                {thumbnailId && " • Thumbnail generated"}
-                            </div>
+                            {response.thumbnailUrl && (
+                                <div style={{ fontSize: '12px', marginTop: '4px' }}>
+                                    Thumbnail generated
+                                </div>
+                            )}
                         </div>
                     ),
                     duration: 4
                 });
-            } else {
-                // Fallback for old response format
-                message.success('Image uploaded successfully');
             }
         }
         
@@ -164,7 +138,6 @@ export default function ({
             message.error(`${file.name} upload failed: ${file.error?.message || 'Unknown error'}`);
         }
     };
-
 
     const handleCustomFileChange = () => {
         setFileList(fileList.filter(file => file.uid !== deleteUid));
@@ -181,8 +154,55 @@ export default function ({
         });
         setDeleteFile(false)
         setPreviewOpen(false)
-
     }
+
+    /**
+     * Custom upload request using the new signed-URL flow
+     * Replaces the old multipart POST to /upload/{type}/
+     */
+    const customUploadRequest = async ({ file, onSuccess, onError, onProgress }) => {
+        try {
+            const result = await uploadBusinessImage({
+                businessId,
+                type,
+                file,
+                generateThumbnailOverride: shouldGenerateThumbnailForType,
+                onProgress: (percent) => {
+                    onProgress({ percent });
+                }
+            });
+
+            // Return the result for handleChange to process
+            onSuccess({
+                imageId: result.imageId,
+                imageUrl: result.imageUrl,
+                thumbnailUrl: result.thumbnailUrl
+            });
+            
+            // Update the file in fileList with the actual URLs
+            setFileList(prevList => 
+                prevList.map(f => {
+                    if (f.uid === file.uid) {
+                        return {
+                            ...f,
+                            url: result.imageUrl,
+                            thumbUrl: result.thumbnailUrl,
+                            status: 'done',
+                            response: {
+                                imageId: result.imageId,
+                                imageUrl: result.imageUrl,
+                                thumbnailUrl: result.thumbnailUrl
+                            }
+                        };
+                    }
+                    return f;
+                })
+            );
+        } catch (error) {
+            console.error('Upload failed:', error);
+            onError(error);
+        }
+    };
 
     if (loadingImages) {
         return <GetLoader
@@ -193,13 +213,7 @@ export default function ({
     return (
         <div style={style}>
             <Upload
-                action={`${process.env.BASE_API_URL || ''}business/${businessId}/upload/${type}/`}
-                headers={{
-                    'Authorization': `Bearer ${typeof window !== 'undefined' ? sessionStorage.getItem("access") || '' : ''}`
-                }}
-                data={{
-                    generateThumbnail: shouldGenerateThumbnailForType ? 'true' : 'false'
-                }}
+                customRequest={customUploadRequest}
                 accept={accept}
                 listType={listType}
                 fileList={fileList}
@@ -242,4 +256,3 @@ export default function ({
         </div>
     );
 }
-

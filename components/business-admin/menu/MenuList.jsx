@@ -15,10 +15,11 @@ import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import DeleteConfirmationModal from "../../util/modals/DeleteConfirmationModal";
 import "./businessMenu.css"
 import NoDataGIF from "../../util/NoDataGIF";
-import {getImageUrl} from "../../util/Commons";
 
 const ListItemCard = ({item, cardMargin, IconText, setupUpdateItem, setDeleteItemId, editing}) => {
-    const businessId = useSelector((state) => state.business.businessId);
+    // Image URL comes directly from the menu item (backend includes full image data)
+    const imageUrl = item.imageUrl || null;
+    
     return <List.Item
         className={"item-card"}
         style={{
@@ -36,17 +37,19 @@ const ListItemCard = ({item, cardMargin, IconText, setupUpdateItem, setDeleteIte
                       callback={() => setDeleteItemId(item.id)}/>
         ] : null}
         extra={
-            <Image
-                alt={item.image?.name}
-                src={getImageUrl(businessId, item.imageId)}
-                loading={"lazy"}
-                style={{
-                    width: 150,
-                    height: 150,
-                    objectFit: 'contain',
-                    borderRadius: 5
-                }}
-            />
+            imageUrl && (
+                <Image
+                    alt={item.name}
+                    src={imageUrl}
+                    loading={"lazy"}
+                    style={{
+                        width: 150,
+                        height: 150,
+                        objectFit: 'contain',
+                        borderRadius: 5
+                    }}
+                />
+            )
         }
     >
         <List.Item.Meta
@@ -185,18 +188,21 @@ export default function ({categoryId, editing = false}) {
     }
 
     function setupUpdateItem(item) {
-
         form.resetFields();
         form.setFieldsValue(item);
 
-
         setUpdateItemId(item.id);
-        if (item.image) {
-            setUploadedImageId(item.image.uid);
-            setUpdateImageFile([item.image]);
-            form.setFieldValue('imageId', item.image.uid);
+        if (item.imageId) {
+            // Image URL comes directly from the menu item (backend includes full image data)
+            setUploadedImageId(item.imageId);
+            setUpdateImageFile([{
+                uid: item.imageId,
+                name: item.name,
+                status: 'done',
+                url: item.imageUrl || null
+            }]);
+            form.setFieldValue('imageId', item.imageId);
         }
-
     }
 
     const IconText = ({icon, text, callback}) => (

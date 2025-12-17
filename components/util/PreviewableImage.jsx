@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Image, Skeleton } from 'antd';
 import { ZoomInOutlined } from '@ant-design/icons';
-import { getThumbnailUrl, getImageUrl, loadImageWithFallback, shouldUseThumbnailOnly } from '@/lib/utils/imageUtils';
+import { loadImageWithFallback } from '@/lib/utils/imageUtils';
 import './PreviewableImage.css';
 
 /**
  * Previewable Image Component
  * Shows thumbnail initially, loads full image only when preview is opened
  * 
+ * Now accepts direct URLs instead of businessId/imageId (legacy endpoints removed)
+ * 
  * @param {Object} props
- * @param {string} props.businessId - The business ID
- * @param {string} props.imageId - The image ID
+ * @param {string} props.imageUrl - The full image URL (required)
+ * @param {string} props.thumbnailUrl - The thumbnail URL (optional)
  * @param {string} props.alt - Alt text for the image
  * @param {string} props.className - CSS class name
  * @param {Object} props.style - Inline styles
@@ -23,8 +25,8 @@ import './PreviewableImage.css';
  * @param {Function} props.onPreviewClose - Callback when preview closes
  */
 const PreviewableImage = ({ 
-    businessId, 
-    imageId, 
+    imageUrl,
+    thumbnailUrl,
     alt = '', 
     className = '', 
     style = {},
@@ -36,7 +38,7 @@ const PreviewableImage = ({
     onPreviewOpen,
     onPreviewClose
 }) => {
-    const [thumbnailSrc, setThumbnailSrc] = useState(null);
+    const [displaySrc, setDisplaySrc] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
     const [isInView, setIsInView] = useState(!lazy);
@@ -71,24 +73,30 @@ const PreviewableImage = ({
 
     // Load thumbnail when in view
     useEffect(() => {
-        if (!businessId || !imageId || !isInView) return;
+        if (!imageUrl || !isInView) return;
 
         const loadThumbnail = async () => {
+            // Prefer thumbnail for display, fall back to full image
+            const urlToLoad = thumbnailUrl || imageUrl;
             try {
-                const thumbnailUrl = getThumbnailUrl(businessId, imageId);
-                await loadImageWithFallback(thumbnailUrl);
-                setThumbnailSrc(thumbnailUrl);
+                await loadImageWithFallback(urlToLoad);
+                setDisplaySrc(urlToLoad);
                 setIsLoading(false);
             } catch (err) {
-                // If thumbnail fails, try loading the full image
-                console.warn('Thumbnail not available, loading full image');
-                try {
-                    const fullUrl = getImageUrl(businessId, imageId);
-                    await loadImageWithFallback(fullUrl);
-                    setThumbnailSrc(fullUrl);
-                    setIsLoading(false);
-                } catch (fullErr) {
-                    console.error('Failed to load image:', fullErr);
+                // If thumbnail fails, try full image
+                if (thumbnailUrl && imageUrl) {
+                    console.warn('Thumbnail not available, loading full image');
+                    try {
+                        await loadImageWithFallback(imageUrl);
+                        setDisplaySrc(imageUrl);
+                        setIsLoading(false);
+                    } catch (fullErr) {
+                        console.error('Failed to load image:', fullErr);
+                        setError(true);
+                        setIsLoading(false);
+                    }
+                } else {
+                    console.error('Failed to load image:', err);
                     setError(true);
                     setIsLoading(false);
                 }
@@ -96,14 +104,13 @@ const PreviewableImage = ({
         };
 
         loadThumbnail();
-    }, [businessId, imageId, isInView]);
+    }, [imageUrl, thumbnailUrl, isInView]);
 
     // Handle preview
     const handlePreview = async () => {
-        if (!previewSrc) {
-            // Load full image for preview
-            const fullUrl = getImageUrl(businessId, imageId);
-            setPreviewSrc(fullUrl);
+        if (!previewSrc && imageUrl) {
+            // Use full image for preview
+            setPreviewSrc(imageUrl);
         }
         onPreviewOpen?.();
     };
@@ -141,7 +148,7 @@ const PreviewableImage = ({
             onMouseLeave={() => setIsHovered(false)}
         >
             <Image
-                src={thumbnailSrc}
+                src={displaySrc}
                 alt={alt}
                 width={'100%'}
                 height={'100%'}
@@ -150,7 +157,7 @@ const PreviewableImage = ({
                     cursor: 'pointer'
                 }}
                 preview={{
-                    src: previewSrc || getImageUrl(businessId, imageId),
+                    src: previewSrc || imageUrl,
                     onVisibleChange: (visible) => {
                         if (visible) {
                             handlePreview();

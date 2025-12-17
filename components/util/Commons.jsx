@@ -1,6 +1,11 @@
 import {PUBLIC_BUSINESS_API} from "@/lib/redux/api_url";
 // useLocation removed - use usePathname from next/navigation if needed
-import { getImageUrl as getImageUrlFromUtils } from "@/lib/utils/imageUtils";
+import { 
+    getImageUrl as getImageUrlFromUtils,
+    getDisplaySrc as getDisplaySrcFromUtils,
+    buildImageMap as buildImageMapFromUtils,
+    getImageFromMap as getImageFromMapFromUtils
+} from "@/lib/utils/imageUtils";
 
 export const MainHeadingStyle= {
     fontWeight: 'bolder',
@@ -35,7 +40,13 @@ export function getMapUrl(address, mapType = 'google') {
 }
 
 // Re-export from imageUtils for backward compatibility
+// NOTE: getImageUrl is DEPRECATED - legacy endpoint removed. Use imageUrl from API response.
 export const getImageUrl = getImageUrlFromUtils;
+
+// New helpers for URL-based image handling
+export const getDisplaySrc = getDisplaySrcFromUtils;
+export const buildImageMap = buildImageMapFromUtils;
+export const getImageFromMap = getImageFromMapFromUtils;
 
 export function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
