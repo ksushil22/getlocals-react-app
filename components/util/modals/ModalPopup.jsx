@@ -20,7 +20,8 @@ function ModalPopup(
         submitButtonText,
         showTitleIcon=true,
         showCancel=true,
-        disableScreenTouch = true
+        disableScreenTouch = true,
+        loading = false
     }
 ) {
     let icon = null;
@@ -43,7 +44,7 @@ function ModalPopup(
         <div>
             {footer}
             {handleCancel && showCancel ?
-                <Button type={"text"} onClick={handleCancel}>
+                <Button type={"text"} onClick={handleCancel} disabled={loading}>
                     Cancel
                 </Button>: null}
             {handleOk ?
@@ -53,7 +54,8 @@ function ModalPopup(
                             color: "white",
                             border: type === "warning" ? "var(--primary-warning)" : "1px solid var(--primary-color)"
                         }}
-                        onClick={handleOk}>
+                        onClick={handleOk}
+                        loading={loading}>
                     {submitButtonText ? submitButtonText : 'Submit'}
                  </Button> : null}
 

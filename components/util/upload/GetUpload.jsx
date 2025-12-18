@@ -55,6 +55,7 @@ export default function ({
     const [fileList, setFileList] = useState([]);
     const [deleteFile, setDeleteFile] = useState(false);
     const [deleteUid, setDeleteUid] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
     
     // Determine whether to generate thumbnails
     const shouldGenerateThumbnailForType = generateThumbnail !== null 
@@ -70,6 +71,8 @@ export default function ({
     const [deleteImage] = useDeleteImageMutation();
     
     const handleCancel = () => {
+        // Don't allow closing the modal while deletion is in progress
+        if (isDeleting) return;
         setPreviewOpen(false);
         setDeleteFile(false);
     };
@@ -106,7 +109,14 @@ export default function ({
     };
 
     const handleChange = ({file, fileList: newFileList}) => {
-        // Always update fileList for UI consistency
+        if (file.status === 'error') {
+            // Remove failed file from the list and return to original state
+            message.error(`${file.name} upload failed: ${file.error?.message || 'Unknown error'}`);
+            setFileList(newFileList.filter(f => f.uid !== file.uid));
+            return;
+        }
+        
+        // Update fileList for UI consistency
         setFileList(newFileList);
         
         if (file.status === 'done') {
@@ -133,10 +143,6 @@ export default function ({
                 });
             }
         }
-        
-        if (file.status === 'error') {
-            message.error(`${file.name} upload failed: ${file.error?.message || 'Unknown error'}`);
-        }
     };
 
     const handleCustomFileChange = () => {
@@ -144,16 +150,25 @@ export default function ({
     }
 
     const handleDelete = async () => {
-        deleteImage(deleteUid).then(({data, error}) => {
+        setIsDeleting(true);
+        try {
+            const { data, error } = await deleteImage({ businessId, id: deleteUid });
             if (data) {
                 handleCustomFileChange();
                 if (setUploadImageId) {
-                    setUploadImageId(null)
+                    setUploadImageId(null);
                 }
+                setDeleteFile(false);
+                setPreviewOpen(false);
+            } else if (error) {
+                message.error('Failed to delete image. Please try again.');
             }
-        });
-        setDeleteFile(false)
-        setPreviewOpen(false)
+        } catch (error) {
+            console.error('Delete failed:', error);
+            message.error('Failed to delete image. Please try again.');
+        } finally {
+            setIsDeleting(false);
+        }
     }
 
     /**
@@ -223,6 +238,8 @@ export default function ({
                     handlePreview(file);
                     setDeleteUid(file.uid);
                     setDeleteFile(true);
+                    // Return false to prevent automatic removal - we handle it manually after backend confirmation
+                    return false;
                 }}
                 maxCount={maxUploads}
                 style={{cursor: "pointer"}}
@@ -243,6 +260,7 @@ export default function ({
                 handleCancel={handleCancel}
                 submitButtonText={deleteFile ? 'Delete' : null}
                 handleOk={deleteFile ? handleDelete : null}
+                loading={isDeleting}
             >
                 <img
                     alt="example"
