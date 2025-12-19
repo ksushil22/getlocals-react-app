@@ -5,12 +5,24 @@ import {AppleFilled, GoogleOutlined} from "@ant-design/icons";
 import {Dropdown} from "antd";
 
 
+// Ensures external URLs have a protocol prefix
+const formatExternalUrl = (url) => {
+    if (!url || url.startsWith('tel:') || url.startsWith('mailto:') || url.startsWith('#')) {
+        return url;
+    }
+    if (!/^https?:\/\//i.test(url)) {
+        return `https://${url}`;
+    }
+    return url;
+};
+
 export const IconLink = ({text, href, icon, showIcon, color, className, preventDefault=false}) => {
+    const formattedHref = formatExternalUrl(href);
     return <span>
         <a
             onClick={(e) => preventDefault? e.preventDefault(): null}
             className={className || 'icon-text'}
-            href={href}
+            href={formattedHref}
             target={"_blank"}
             style={{
                 color: color || COLORS.PRIMARY_BACKGROUND,
