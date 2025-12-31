@@ -23,6 +23,8 @@ export const StyledFooter = styled(Footer)`
     justify-content: center;
     flex-direction: column;
     flex-wrap: wrap;
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0 -4px 6px -2px rgba(0, 0, 0, 0.1);
 `;
 
 export const StyledDiv = styled.div`

@@ -138,4 +138,9 @@ export const VisualsDiv = styled.div`
 export const FooterDiv = styled.div`
     width: 100%;
     background: var(--primary-background);
+    min-height: 5vh;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
