@@ -6,6 +6,10 @@ const animationVariants = {
         hidden: { opacity: 0, y: -100 },
         visible: { opacity: 1, y: 0 },
     },
+    slideInDown: {
+        hidden: { opacity: 0, y: -50 },
+        visible: { opacity: 1, y: 0 },
+    },
     fadeOutUp: {
         hidden: { opacity: 1, y: 0 },
         visible: { opacity: 0, y: -100 },

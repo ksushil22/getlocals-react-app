@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
+import GetAnimation from "@/components/util/GetAnimation";
 
 const texts = [" Marketing ", " Website Builder ", " Advertisement ", "Search Engine Optimization", "Social Media Marketing"];
 
@@ -47,7 +48,9 @@ const InformationDiv = () => {
             <h1 className="typing-h1" style={{
                 color: '#333',
             }}>{currentText}</h1>
-            <p className={"animate__animated animate__slideInDown"}>One Subscription for all your Digital Business needs</p>
+            <GetAnimation animateIn="slideInDown" duration={0.6}>
+                <p>One Subscription for all your Digital Business needs</p>
+            </GetAnimation>
         </div>
     );
 };

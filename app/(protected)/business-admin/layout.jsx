@@ -29,13 +29,7 @@ export default function BusinessAdminLayout({ children }) {
                     {children}
                 </Content>
                 <Footer>
-                    <div style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        display: 'flex'
-                    }}>
-                        © 2024 Neo Corporation, All rights reserved.
-                    </div>
+                    © 2024 Neo Corporation, All rights reserved.
                 </Footer>
             </Layout>
         </WebSocketProvider>
